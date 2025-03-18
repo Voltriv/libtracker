@@ -154,12 +154,14 @@ document.addEventListener('DOMContentLoaded', function() {
     startScannerButton.addEventListener('click', function() {
         scannerContainer.classList.add('active');
         container.classList.add('shifted');
+        localStorage.setItem('scannerActive', 'true');
         startScanner();
     });
 
     stopScannerButton.addEventListener('click', function() {
         scannerContainer.classList.remove('active');
         container.classList.remove('shifted');
+        localStorage.setItem('scannerActive', 'false');
         stopScanner();
     });
 
@@ -269,8 +271,13 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', attendance_filterTable);
     departmentFilter.addEventListener('change', attendance_filterTable);
 
+    // Check scanner state on page load
+    if (localStorage.getItem('scannerActive') === 'true') {
+        scannerContainer.classList.add('active');
+        container.classList.add('shifted');
+        startScanner();
+    }
 });
-
 </script>
 
 </body>
