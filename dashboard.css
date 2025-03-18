@@ -1,0 +1,297 @@
+
+/* Sidebar */
+
+.sidebar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 15.625rem;
+    padding: 0.625rem 0.875rem;
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+    z-index: 100;
+}
+.sidebar.close{
+    width: 5.5rem;
+}
+
+/* Reusable CSS */
+
+.sidebar .text{
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 500;
+    transition: var(--tran-05);   
+    white-space: nowrap;
+    opacity: 1;
+}
+
+.sidebar.close .text{
+    opacity: 0;
+}
+
+.sidebar .image {
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar li{
+    height: 50px;
+    margin-top: 10px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar li .icon{
+    min-width: 60px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar li .icon,
+.sidebar li .text{
+    color: var(--text-color);
+    transition: var(--tran-05);
+   
+}
+
+.sidebar header{
+    position: relative;
+}
+
+.sidebar .image-text img{
+    width: 100px;
+    border-radius: 6px;
+}
+
+.sidebar header .image-text{
+    display: flex;
+    align-items: center;
+}
+
+header .image-text .header-text{
+    display: flex;
+    flex-direction: column;
+}
+
+.header-text .name{
+    font-weight: 600;
+}
+
+.header-text .profession{
+    margin-top: -2px;
+}
+
+.sidebar header .toggle {
+    position: absolute;
+    top: 50%;   
+    right: -25px;
+    transform: translateY(-50%) rotate(180deg);
+    height: 25px;  
+    width: 25px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: var(--sidebar-color);
+    font-size: 22px;
+    transition: var(--tran-05);
+}
+.sidebar.close header .toggle{
+    transform: translateY(-50%);
+}
+body.dark .sidebar header .toggle{
+    color: var(--text-color);
+}
+
+.sidebar .menu{
+    margin-top: 35px;
+}
+ a.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhance shadow on active */
+}
+.sidebar li a{
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border-radius: 6px;
+    transition: var(--tran-05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+}
+
+
+.sidebar li a:hover,
+.sidebar li a.active {
+    background: var(--primary-color);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+    color: rgb(255, 255, 255);
+}
+
+
+
+.sidebar li a:hover .text,
+.sidebar li a:hover .icon,
+.sidebar li a.active .text,
+.sidebar li a.active .icon {
+    color: rgb(255, 255, 255);
+}
+
+
+body.dark .sidebar li  a:hover .text,
+body.dark .sidebar li  a:hover .icon,
+body.dark .sidebar li  a.active .text,
+body.dark .sidebar li  a.active .icon {
+    color: rgb(255, 255, 255);
+}
+
+
+
+.sidebar .menu-bar{
+  
+    height: calc(100% - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.menu-bar .mode{
+    position: relative;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+}
+
+.menu-bar .mode i{
+    position: absolute;
+    transition: var(--tran-05);
+}
+
+.menu-bar .mode .moon-sun{
+    height: 50px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+}
+.menu-bar .mode i.sun{
+    opacity: 0;
+}
+body.dark .menu-bar .mode i.sun{
+    opacity: 1;
+}
+body.dark .menu-bar .mode i.moon{
+    opacity: 0;
+}
+.menu-bar .mode .toggle-switch{
+    position: absolute;
+    display: flex;
+    right: 0;
+    align-items: center;
+    justify-items: center;
+    height: 100%;
+    min-width: 53px;
+    cursor: pointer;
+    border-radius: 6px;
+    background: var(--primary-color-light);
+    
+}
+
+
+.toggle-switch .switch{
+    position: relative;
+    height: 22px;
+    width: 44px;
+    background: var(--toggle-color);
+    border-radius: 25px;
+   
+   
+}
+.switch::before{
+    content: '';
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    background: var(--sidebar-color);
+    transition: var(--tran-05);
+}
+
+body.dark .switch::before{
+    left: 24px;
+}
+
+.home{
+    position: relative;
+    left: 250px;
+    height: 100vh;
+    width: calc(100% - 250px);
+    background: var(--body-color);
+    transition: var(--tran-05);
+}
+.home .text{
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 500;
+    transition: var(--tran-05);
+    padding: 8px 40px;
+}
+.sidebar.close ~ .home{
+    left: 88px;
+    width: calc(100% - 88px);
+}
+
+.home-addbook{
+    position: relative;
+    left: 250px;
+    height: 100vh;
+    width: calc(100% - 250px);
+    background: url(logo_lib.png) no-repeat center center var(--body-color);
+    background-size: 1000px auto;
+    transition: var(--tran-05);
+    padding: 15px;
+    
+}
+.sidebar.close ~ .home-addbook{
+    left: 88px;
+    width: calc(100% - 88px);
+}
+.home-addbook .text{
+    color: var(--text-color);
+    font-size: 24px;
+    font-weight: 500;
+    transition: var(--tran-05);
+    padding: 8px 40px;
+}
+
+div .dashboard-container{
+    background: rgb(148, 110, 110);
+    border: 1px solid black;
+    width: 20rem;
+}
+.home-content{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 15px;
+    height: 100%;
+    
+}
+
+
+
+
+
+

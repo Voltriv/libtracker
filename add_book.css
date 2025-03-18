@@ -1,0 +1,236 @@
+
+/* Add Book Form Styling */
+.addbookform-container,.edit-book-container {
+    position: absolute;
+    top: 0;
+    right: -300px; /* Initially hidden off-screen */
+    width: 300px; /* Adjust width as needed */
+    height: 93.51%;
+    background:var(--primary-color);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.5s ease; /* Smooth sliding effect */
+    padding: 20px;
+    z-index: 1000; /* Ensure it appears above other content */
+    display: flex;
+    flex-direction: column; /* Ensure form elements are stacked vertically */
+    text-align: center;
+    color: white;
+    border-radius: .625rem;
+    margin-top: 30px;
+}
+
+.addbookform-container.active, .edit-book-container.active {
+    right: 0; /* Slide in from the right */
+}
+
+.addbookform-container h1 {
+    margin-bottom: 20px;
+}
+
+.addbookform-container input,
+.addbookform-container select,
+.addbookform-container button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.addbookform-container button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+
+}
+
+.addbookform-container button:hover {
+    background: #218838;
+}
+
+
+
+.table-container {
+    width: 100%;
+    height: 87.5%;
+    overflow-y: auto;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+
+
+
+/* Close button */
+.close-btn {
+    align-self: flex-end;
+    cursor: pointer;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Form styles */
+.edit-book-container h1
+ {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #ffffff;
+}
+
+.edit-book-container form{
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-book-container form input,
+.edit-book-container form select,
+.edit-book-container form button {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.edit-book-container form button{
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+}
+
+
+.edit-book-container form button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-book-container form button:hover {
+    background: #218838;
+}
+
+
+
+.container.shifted {
+    margin-right: 300px; /* Adjust margin to match form width */
+}
+
+#container5.shifted{
+    margin-right: 300px;
+}
+.book-cover{
+    width: 50px;
+    height: 60px;
+    cursor: pointer;
+    transition: transform 0.5s, top 0.5s, left 0.5s, width 0.5s, height 0.5s;
+    position: relative;
+    z-index: 1;
+}
+.book-cover.active{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1); /* Adjust scale as you like */
+    z-index: 10001;
+    width: auto; /* Optional: control size */
+    height: auto; /* Optional */
+    opacity: 1;
+
+}
+
+/* Base styles for both inputs */
+.input_bookcover,
+.input_bookpdf {
+  position: relative;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* Hide default file input */
+.input_bookcover input[type="file"],
+.input_bookpdf input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Custom label styling */
+.input_bookcover .file-label,
+.input_bookpdf .file-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px ;
+  border-radius: 4px;
+  color: white;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+/* Icon styling */
+.input_bookcover .file-label i,
+.input_bookpdf .file-label i {
+  font-size: 16px;
+  color: rgb(11, 138, 0);
+  margin-left: auto;
+}
+
+/* Button text */
+.input_bookcover .file-label .button-text,
+.input_bookpdf .file-label .button-text {
+    font-size: 12px;
+  color: rgb(56, 56, 56);
+}
+
+/* File name display */
+.input_bookcover .file-label .file-name,
+.input_bookpdf .file-label .file-name {
+  color: rgba(0, 0, 0, 0.8);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+/* Show selected file name */
+.input_bookcover input:valid + .file-label .file-name,
+.input_bookpdf input:valid + .file-label .file-name {
+  display: inline;
+}
+
+.input_bookcover input:valid + .file-label .button-text,
+.input_bookpdf input:valid + .file-label .button-text {
+  display: none;
+}
+
+
+/*book cover */
+.input_bookcover .file-label {
+    background:white ;
+}
+
+.input_bookcover .file-label:hover {
+    background:rgb(182, 182, 182) ;
+}
+
+/* book PDF */
+.input_bookpdf .file-label {
+    background:white ;
+}
+
+.input_bookpdf .file-label:hover {
+    background:rgb(182, 182, 182) ;
+    
+}
+
+
+.add-btn{
+    margin-right: 25%;
+}
