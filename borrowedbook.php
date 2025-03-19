@@ -209,6 +209,66 @@ function filterTable() {
 
 document.getElementById('search3').addEventListener('input', filterTable);
 document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    function fetchBorrowedBooks() {
+        fetch('fetch_borrowed_books.php')
+            .then(response => response.json())
+            .then(data => {
+                updateBorrowedBookTable(data);
+            })
+            .catch(error => console.error('Error fetching borrowed books:', error));
+    }
+
+    function updateBorrowedBookTable(data) {
+        const tableBody = document.getElementById('borrowedBookTableBody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            let disabled = row.status === 'Returned' ? 'disabled' : '';
+
+            tr.innerHTML = `
+                <td>${row.transaction_id}</td>
+                <td>${row.title}</td>
+                <td>${row.student_id}</td>
+                <td>${row.last_name}</td>
+                <td>${row.first_name}</td>
+                <td>${row.borrowed_date}</td>
+                <td>${row.status}</td>
+                <td>
+                    <div class='actions_button'>
+                        <button class='return-btn' data-transaction-id='${row.transaction_id}' ${disabled}>Return</button>
+                    </div>
+                </td>
+            `;
+
+            tableBody.appendChild(tr);
+        });
+
+        attachReturnButtonListeners();
+    }
+
+    function attachReturnButtonListeners() {
+        document.querySelectorAll('.return-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const transactionId = this.getAttribute('data-transaction-id');
+                updateStatus(transactionId, 'return');
+            });
+        });
+    }
+
+    // Fetch borrowed books every 5 seconds (5000 milliseconds)
+    setInterval(fetchBorrowedBooks, 1000);
+
+    // Initial fetch
+    fetchBorrowedBooks();
+});
+
+
+
+
 </script>
 
 </body>

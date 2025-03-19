@@ -446,14 +446,17 @@ th:active .sort-icon {
 .notification-btn .badge{
     position: absolute;
     top: 0px;
-    right: 366px;
+    right: 363px;
     background: red;
     color: white;
     font-size: 12px;
     font-weight: bold;
     padding: 4px 8px;
     border-radius: 50%;
+    width: 20px;  /* Set fixed width */
+    height: 20px; /* Set fixed height */
     display: none; /* Hidden by default */
+    align-items: right;
 }
 
 .header {
