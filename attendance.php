@@ -19,11 +19,13 @@
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
+            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
         </div>
     </div>
+    
 </nav>
 <div class="container2">
     <div class="search-sort">

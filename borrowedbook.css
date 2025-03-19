@@ -8,8 +8,13 @@
 }
 
 .return-btn {
-    background-color: aqua;
+    background-color: var(--success-color);
     width: 100px;
+    color: white;
+    font-weight: bold;
+}
+.return-btn:hover {
+    background-color: var(--hover-success-color);
 }
 
 button:disabled {

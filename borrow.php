@@ -73,6 +73,22 @@ try {
         if (!$stmt2->execute()) {
             throw new Exception("Error updating 'books' table: " . $stmt2->error);
         }
+
+        // Fetch student name
+        $student_result = $conn->query("SELECT first_name, last_name FROM user WHERE student_id = '$studentId'");
+        if ($student_result->num_rows > 0) {
+            $student = $student_result->fetch_assoc();
+            $student_name = $student['first_name'] . ' ' . $student['last_name'];
+
+            // Insert notification
+            // Insert notification (Fix: Use Prepared Statements)
+            $message = "$student_name borrowed a book titled '$bookTitle'";
+            $stmt3 = $conn->prepare("INSERT INTO notifications (message) VALUES (?)");
+            $stmt3->bind_param("s", $message);
+            $stmt3->execute();
+            $stmt3->close();
+
+        }
     }
 
     // Commit transaction

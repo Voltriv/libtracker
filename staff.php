@@ -21,6 +21,7 @@ include 'db_config.php';
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
+            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
@@ -29,6 +30,9 @@ include 'db_config.php';
 </nav>
 <div class="container5">
     <div class="search-sort">
+
+        <button id="openStaffFormButton" class="add-btn">+ ADD STAFF</button>
+
         <input type="text" id="search4" placeholder="Search...">
         <select id="userFilter" class="filter-attendance">
             <option value="">All Departments</option>

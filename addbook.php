@@ -103,12 +103,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
+            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
         </button>
+
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
         </div>
     </div>
 </nav>
+
+<!-- Include the notification panel -->
+<?php include 'notification.php'; ?>
+
 <div class="container" id="container5">
     <div class="search-sort">
         <button id="openFormButton" class="add-btn">+ ADD BOOK</button>

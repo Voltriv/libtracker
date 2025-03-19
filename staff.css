@@ -13,15 +13,21 @@
     margin-top: 10px;
 
 }
-
+.three-dot-btn-staff {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--table-text-color);
+    font-size: calc(var(--font-size-base)* 1.125);
+}
 
 /* Edit User Sliding Form */
 .edit-staff-container {
     position: absolute;
-    top: 0;
+    top: 50px;
     right: -300px;
     width: 300px;
-    height: 93.51%;
+    height: 89%;;
     background: var(--primary-color);
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transition: right 0.5s ease;
@@ -97,7 +103,7 @@
 
 .status-active-staff {
     margin-top: 10px;
-    display: inline-block;
+    display: flex;
     background-color: #28a745;
     color: #fff;
     padding: 4px 10px; 
@@ -108,11 +114,12 @@
     min-width: 60px; 
     text-transform: uppercase;
     letter-spacing: 1px;
+    justify-content: center;
 }
 
 .status-deactivated {
     margin-top: 10px;
-    display: inline-block;
+    display: flex;
     background-color: #ff0000; 
     color: #fff;
     padding: 4px 10px; 
@@ -123,6 +130,7 @@
     min-width: 60px; 
     text-transform: uppercase;
     letter-spacing: 1px;
+    justify-content: center;
 }
 
 .action_button_Staff{

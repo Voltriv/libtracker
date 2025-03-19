@@ -11,13 +11,16 @@ while ($row = $result->fetch_assoc()) {
     $departmentCounts[$row['department']] = $row['user_count'];
 }
 
-// Fetch attendance data per department
+// Fetch today's attendance data per department (Soft Reset)
 $attendanceData = [];
-$query = "SELECT department, COUNT(*) as attendance_count FROM attendance GROUP BY department";
+$today = date('l'); // Get today's date
+
+$query = "SELECT department, COUNT(*) as attendance_count FROM attendance WHERE day = '$today' GROUP BY department";
 $result = $conn->query($query);
 while ($row = $result->fetch_assoc()) {
     $attendanceData[$row['department']] = $row['attendance_count'];
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +42,7 @@ while ($row = $result->fetch_assoc()) {
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
+            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>

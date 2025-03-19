@@ -11,6 +11,7 @@ include 'db_config.php';
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="global.css">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    
     <title>User Management</title>
 </head>
 <body>
@@ -21,6 +22,7 @@ include 'db_config.php';
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
+            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
@@ -194,45 +196,46 @@ document.addEventListener('DOMContentLoaded', function () {
             const action = this.textContent.trim();
             if (confirmToggleStatus(event, action)) {
                 toggleUserStatus(userId, action);
+                window.location.reload(self);
             }
         });
     });
 
     function toggleUserStatus(userId, action) {
-        fetch('toggle_status.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ user_id: userId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const row = document.querySelector(`input[value='${userId}']`).closest('tr');
-                const statusCell = row.cells[7]; // Status column
-                const button = row.querySelector('.toggle-status-btn');
-                const icon = button.querySelector('i');
+    fetch('toggle_status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const row = document.querySelector(`input[value='${userId}']`).closest('tr');
+            const statusCell = row.cells[7]; // Status column
+            const button = row.querySelector('.toggle-status-btn');
 
-                if (data.new_status === 1) {
-                    statusCell.textContent = 'Active';
-                    statusCell.classList.add('status-active');
-                    statusCell.classList.remove('status-deactivated');
-                    button.innerHTML = '<i class="bx bx-user-x"></i> Deactivate';
-                    button.classList.remove('activate-btn');
-                    button.classList.add('deactivate-btn');
-                } else {
-                    statusCell.textContent = 'Deactivated';
-                    statusCell.classList.add('status-deactivated');
-                    statusCell.classList.remove('status-active');
-                    button.innerHTML = '<i class="bx bx-user-check"></i> Activate';
-                    button.classList.remove('deactivate-btn');
-                    button.classList.add('activate-btn');
-                }
+            if (data.new_status === 1) {
+                statusCell.textContent = 'Active';
+                statusCell.classList.remove('status-deactivated');
+                statusCell.classList.add('status-active');
+                button.innerHTML = '<i class="bx bx-user-x"></i> Deactivate';
+                button.classList.remove('activate-btn');
+                button.classList.add('deactivate-btn');
             } else {
-                alert('Error toggling status: ' + data.message);
+                statusCell.textContent = 'Deactivated';
+                statusCell.classList.remove('status-active');
+                statusCell.classList.add('status-deactivated');
+                button.innerHTML = '<i class="bx bx-user-check"></i> Activate';
+                button.classList.remove('deactivate-btn');
+                button.classList.add('activate-btn');
             }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        } else {
+            alert('Error toggling status: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 
     function confirmToggleStatus(event, action) {
         if (!confirm(`Are you sure you want to ${action.toLowerCase()} this user?`)) {
