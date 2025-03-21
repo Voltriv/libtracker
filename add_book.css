@@ -124,7 +124,6 @@
     cursor: pointer;
     transition: transform 0.5s, top 0.5s, left 0.5s, width 0.5s, height 0.5s;
     position: relative;
-    z-index: 1;
 }
 .book-cover.active{
     position: absolute;

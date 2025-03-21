@@ -69,7 +69,7 @@ while ($row = $result->fetch_assoc()) {
     </div>
     <div class="dashboard-row">
         <div class="dashboard-box">
-            <h3>ATTENDANCE</h3>
+            <h2>ATTENDANCE</h2>
             <div class="attendance-container">
                 <div class="attendance-labels">
                     <?php
@@ -83,7 +83,7 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </div>
         </div>
-        <div class="dashboard-box"><h3>BORROWED BOOK</h3></div>
+        <div class="dashboard-box"><h2>BORROWED BOOK</h2></div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -1,6 +1,6 @@
-<?php include 'db_config.php'; ?>
+<?php 
+include 'db_config.php'; 
 
-<?php
 $imageFolder = "C:/xampp/htdocs/LibTrack/libtracker/book_images/";
 $pdfFolder = "C:/xampp/htdocs/LibTrack/libtracker/book_pdf/";
 
@@ -28,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Handle file uploads
         if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
             $imageName = basename($_FILES['book_cover']['name']);
-            $image_url = 'http://192.168.1.248/LibTrack/libtracker/book_images/' . $imageName;
+            $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
             move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
         }
         
         if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
             $pdfName = basename($_FILES['book_pdf']['name']);
-            $pdf_url = 'http://192.168.1.248/LibTrack/libtracker/book_pdf/' . $pdfName;
+            $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
             move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
         }
 
@@ -59,13 +59,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Handle file uploads
             if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
                 $imageName = basename($_FILES['book_cover']['name']);
-                $image_url = 'http://192.168.1.248/LibTrack/libtracker/book_images/' . $imageName;
+                $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
                 move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
             }
             
             if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
                 $pdfName = basename($_FILES['book_pdf']['name']);
-                $pdf_url = 'http://192.168.1.248/LibTrack/libtracker/book_pdf/' . $pdfName;
+                $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
                 move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
             }
 
@@ -208,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="hidden" name="current_pdf_url" id="currentPdfUrl">
     <input type="text" name="title" id="editTitle" placeholder="Book Title" required>
     <input type="text" name="author" id="editAuthor" placeholder="Author" required>
-    <input type="number" name="book_code" id="editbook_code" placeholder="Book Code" required>
+    <input type="text" name="book_code" id="editbook_code" placeholder="Book Code" required>
     <input type="number" name="copies_available" id="editCopiesAvailable" placeholder="Available Copies" required>
     <input type="number" name="total_copies" id="editTotalCopies" placeholder="Total Copies" required>
     <select name="category" id="editCategory" required>

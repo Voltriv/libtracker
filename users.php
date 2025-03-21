@@ -22,7 +22,7 @@ include 'db_config.php';
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
-            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
+            <span class="badge hidden">0</span> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
@@ -116,7 +116,6 @@ include 'db_config.php';
             <input type="text" name="first_name" placeholder="First Name" id="editFirstName" required>
             <input type="text" name="last_name" placeholder="Last Name" id="editLastName" required>
             <select name="department" id="editCategory" required>
-                <option value="" disabled selected>Select Department</option>
                 <option value="CITE">CITE</option>
                 <option value="CAHS">CAHS</option>
                 <option value="CCJE">CCJE</option>
@@ -127,7 +126,6 @@ include 'db_config.php';
                 <option value="SHS">SHS</option>
             </select>
             <select name="year_level" id="editYearLevel" required>
-                <option value="" disabled selected>Select Year Level</option>
                 <option value="Freshmen (1st Year)">Freshmen (1st Year)</option>
                 <option value="Sophomore (2nd Year)">Sophomore (2nd Year)</option>
                 <option value="Junior (3rd Year)">Junior (3rd Year)</option>
@@ -137,7 +135,7 @@ include 'db_config.php';
             <input type="email" name="phinmaed_email" id="editEmail" required>
             <input type="text" name="contact_number" id="editContactNumber" required>
             <button type="submit" name="update_user" class="update-btn">Update</button>
-            <button type="button" id="closeFormButton" onclick="closeEditForm()">Cancel</button>
+            <button type="button" id="closeFormButton" class="close-user-btn" onclick="closeEditForm()">Cancel</button>
         </form>
     </div>
 
@@ -317,6 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('editYearLevel').value = data.year_level;
                 document.getElementById('editEmail').value = data.phinmaed_email;
                 document.getElementById('editContactNumber').value = data.contact_number;
+                console.log("Department from API:", data.department); // Check if department exists
 
                 // Set the selected department
                 const departmentSelect = document.getElementById('editCategory');

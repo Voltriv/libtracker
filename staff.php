@@ -15,13 +15,13 @@ include 'db_config.php';
 </head>
 <body>
 <nav class="header">
-    <h1>Staff</h1>
+    <h1>Library Staff</h1>
 
     <!-- Container to keep notification and header-right together -->
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
-            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
+            <span class="badge hidden">0</span> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
@@ -34,15 +34,13 @@ include 'db_config.php';
         <button id="openStaffFormButton" class="add-btn">+ ADD STAFF</button>
 
         <input type="text" id="search4" placeholder="Search...">
-        <select id="userFilter" class="filter-attendance">
-            <option value="">All Departments</option>
-            <option value="CITE">CITE</option>
-            <option value="CMA">CMA</option>
-            <option value="CEA">CEA</option>
-            <option value="CAS">CAS</option>
-            <option value="CELA">CELA</option>
-            <option value="CCJE">CCJE</option>
-            <option value="CAHS">CAHS</option>
+        <select id="positionFilter" class="filter-attendance">
+            <option value="">All Positions</option>
+            <option value="Librarian - Periodical Section">Librarian - Periodical Section</option>
+            <option value="Librarian - General Circulation Section">Librarian - General Circulation Section</option>
+            <option value="Librarian - Law Library">Librarian - Law Library</option>
+            <option value="Library Assistant - Dissertation Section">Library Assistant - Dissertation Section</option>
+            <option value="Library Assistant - Technical Section">Library Assistant - Technical Section</option>
         </select>
     </div>
     
@@ -50,11 +48,11 @@ include 'db_config.php';
         <table>
             <thead>
                 <tr>
-                    <th data-column5="staff_id">Staff ID<i class='bx bx-sort sort-icon'></i></th>
-                    <th data-column5="first_name">First Name<i class='bx bx-sort sort-icon'></i></th>
-                    <th data-column5="last_name">Last Name<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column5="staff_idNum">Staff ID<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column5="staff_first_name">First Name<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column5="staff_last_name">Last Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column5="position">Position<i class='bx bx-sort sort-icon'></i></th>
-                    <th data-column5="email">Email<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column5="phinmaed_email">phinmaed_email<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column5="status">Status<i class='bx bx-sort sort-icon'></i></th>
                     <th>Actions</th>
                 </tr>
@@ -70,11 +68,11 @@ include 'db_config.php';
                         $toggleIcon = $row['status'] == 1 ? 'bx-user-x' : 'bx-user-check';
                         $statusClass = $row['status'] == 1 ? 'status-active-staff' : 'status-deactivated';
                         echo "<tr>
-                                <td>{$row['staff_id']}</td>
-                                <td>{$row['first_name']}</td>
-                                <td>{$row['last_name']}</td>
+                                <td>{$row['staff_idNum']}</td>
+                                <td>{$row['staff_first_name']}</td>
+                                <td>{$row['staff_last_name']}</td>
                                 <td>{$row['position']}</td>
-                                <td>{$row['email']}</td>
+                                <td>{$row['phinmaed_email']}</td>
                                 <td class='{$statusClass}'>{$status}</td>
                                 <td>
                                     <form method='POST' class='toggle-status-form'>
@@ -108,23 +106,23 @@ include 'db_config.php';
         <h1>Edit Staff</h1>
         <form id="editStaffForm" method="POST">
             <input type="hidden" name="staff_id" id="editStaffId">
-            <input type="text" name="first_name" placeholder="First Name" id="editFirstName" required>
-            <input type="text" name="last_name" placeholder="Last Name" id="editLastName" required>
-            <input type="text" name="position" placeholder="Position" id="editPosition" required>
-            <input type="email" name="email" id="editEmail" required>
-            <select name="department" id="editDepartment" required>
-                <option value="" disabled selected>Select Department</option>
-                <option value="CITE">CITE</option>
-                <option value="CAHS">CAHS</option>
-                <option value="CCJE">CCJE</option>
-                <option value="CEA">CEA</option>
-                <option value="CELA">CELA</option>
-                <option value="CMA">CMA</option>
-                <option value="COL">COL</option>
-                <option value="SHS">SHS</option>
+            <input type="text" name="staff_idNum" id="editStaffIdNum" placeholder="Staff ID" required>
+            <input type="text" name="staff_first_name" id="editStaffFirstName" required>
+            <input type="text" name="staff_last_name" id="editStaffLastName" required>
+            <select name="position" id="editPosition" required>
+                <option value="Librarian - Periodical Section">Librarian - Periodical Section</option>
+                <option value="Librarian - General Circulation Section">Librarian - General Circulation Section</option>
+                <option value="Librarian - Law Library">Librarian - Law Library</option>
+                <option value="Library Assistant - Dissertation Section">Library Assistant - Dissertation Section</option>
+                <option value="Library Assistant - Technical Section">Library Assistant - Technical Section</option>
             </select>
-            <button type="submit" name="update_staff" class="update-btn">Update</button>
-            <button type="button" id="closeStaffFormButton" onclick="closeEditFormStaff()">Cancel</button>
+            <input type="email" name="phinmaed_email" id="editphinmaed_email" placeholder="Email" required>
+            <select name="status" id="editStatus" required>
+                <option value="1">Active</option>
+                <option value="0">Deactivated</option>
+            </select>
+            <button type="submit" name="update_staff" class="update-staff-btn">Update</button>
+            <button type="button" id="closeStaffFormButton" class="close-staff-form" onclick="closeEditFormStaff()">Cancel</button>
         </form>
     </div>
 
@@ -134,8 +132,8 @@ document.getElementById('editStaffForm').addEventListener('submit', function (ev
     event.preventDefault();
 
     // Format first name and last name to Title Case
-    const firstNameInput = document.getElementById('editFirstName');
-    const lastNameInput = document.getElementById('editLastName');
+    const firstNameInput = document.getElementById('editStaffFirstName');
+    const lastNameInput = document.getElementById('editStaffLastName');
     firstNameInput.value = toTitleCase(firstNameInput.value);
     lastNameInput.value = toTitleCase(lastNameInput.value);
 
@@ -152,11 +150,12 @@ document.getElementById('editStaffForm').addEventListener('submit', function (ev
 
             // Update UI dynamically
             const row = document.querySelector(`input[value='${formData.get("staff_id")}']`).closest('tr');
-            row.cells[1].textContent = formData.get("first_name");
-            row.cells[2].textContent = formData.get("last_name");
+            row.cells[0].textContent = formData.get("staff_idNum");
+            row.cells[1].textContent = formData.get("staff_first_name");
+            row.cells[2].textContent = formData.get("staff_last_name");
             row.cells[3].textContent = formData.get("position");
-            row.cells[4].textContent = formData.get("email");
-            row.cells[5].textContent = formData.get("department");
+            row.cells[4].textContent = formData.get("phinmaed_email");
+            row.cells[5].textContent = formData.get("status") == 1 ? 'Active' : 'Deactivated';
         } else {
             alert('Error updating staff: ' + data.message);
         }
@@ -229,9 +228,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function() { 
     const staffTableBody = document.getElementById('staffTableBody');
-    const userTableHeaders = document.querySelectorAll('th[data-column5]');
+    const staffTableHeaders = document.querySelectorAll('th[data-column5]');
 
-    userTableHeaders.forEach(header => {
+    staffTableHeaders.forEach(header => {
         header.addEventListener('click', function() {
             const column = header.getAttribute('data-column5');
             let order = header.getAttribute('data-order');
@@ -239,13 +238,13 @@ document.addEventListener('DOMContentLoaded', function() {
             order = order === 'asc' ? 'desc' : 'asc';
             header.setAttribute('data-order', order);
 
-            user_sortTable(column, order);
+            staff_sortTable(column, order);
         });
     });
 
-    function user_sortTable(column, order) {
+    function staff_sortTable(column, order) {
         const rows = Array.from(staffTableBody.querySelectorAll('tr'));
-        const columnIndex = user_getColumnIndex(column);
+        const columnIndex = staff_getColumnIndex(column);
 
         rows.sort((a, b) => {
             const cellA = a.cells[columnIndex].textContent.trim().toLowerCase();
@@ -261,13 +260,13 @@ document.addEventListener('DOMContentLoaded', function() {
         rows.forEach(row => staffTableBody.appendChild(row));
     }
 
-    function user_getColumnIndex(column) {
+    function staff_getColumnIndex(column) {
         const columnOrder = {
-            'staff_id': 0,
-            'first_name': 1,
-            'last_name': 2,
+            'staff_idNum': 0,
+            'staff_first_name': 1,
+            'staff_last_name': 2,
             'position': 3,
-            'email': 4,
+            'phinmaed_email': 4,
             'status': 5
         };
         return columnOrder[column];
@@ -283,25 +282,35 @@ function editStaff(staffId) {
     fetch(`get_staff.php?staff_id=${staffId}`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('editStaffId').value = data.staff_id;
-            document.getElementById('editFirstName').value = data.first_name;
-            document.getElementById('editLastName').value = data.last_name;
-            document.getElementById('editPosition').value = data.position;
-            document.getElementById('editEmail').value = data.email;
-            document.getElementById('editDepartment').value = data.department;
+            if (data.success) {
+                document.getElementById('editStaffId').value = data.staff.staff_id;
+                document.getElementById('editStaffIdNum').value = data.staff.staff_idNum;
+                document.getElementById('editStaffFirstName').value = data.staff.staff_first_name || '';
+            document.getElementById('editStaffLastName').value = data.staff.staff_last_name || '';
+            document.getElementById('editPosition').value = data.staff.position || '';
+                document.getElementById('editphinmaed_email').value = data.staff.phinmaed_email;
+                document.getElementById('editStatus').value = data.staff.status;
 
-            // Set the selected department
-            const departmentSelect = document.getElementById('editDepartment');
-            for (let i = 0; i < departmentSelect.options.length; i++) {
-                if (departmentSelect.options[i].value === data.department) {
-                    departmentSelect.selectedIndex = i;
-                    break;
+                console.log("First Name:", document.getElementById('editStaffFirstName').value);
+            console.log("Last Name:", document.getElementById('editStaffLastName').value);
+            console.log("Position:", document.getElementById('editPosition').value);
+
+                // Set the selected position
+                const positionSelect = document.getElementById('editPosition');
+                for (let i = 0; i < positionSelect.options.length; i++) {
+                    if (positionSelect.options[i].value === data.staff.position) {
+                        positionSelect.selectedIndex = i;
+                        break;
+                    }
                 }
-            }
 
-            document.getElementById('editStaffContainer').classList.add('active');
-            document.querySelector('.container5').classList.add('shifted');
-        });
+                document.getElementById('editStaffContainer').classList.add('active');
+                document.querySelector('.container5').classList.add('shifted');
+            } else {
+                alert('Error fetching staff details: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 function closeEditFormStaff() {
@@ -311,23 +320,22 @@ function closeEditFormStaff() {
 
 function filterTable() {
     const searchInput = document.getElementById('search4');
-    const userFilter = document.getElementById('userFilter');
+    const positionFilter = document.getElementById('positionFilter');
     const filter = searchInput.value.toLowerCase();
-    const department = userFilter.value.toLowerCase();
+    const position = positionFilter.value.toLowerCase();
     const rows = document.getElementById('staffTableBody').getElementsByTagName('tr');
 
     Array.from(rows).forEach(row => {
-        const staff_id = row.cells[0].textContent.toLowerCase();
-        const first_name = row.cells[1].textContent.toLowerCase();
-        const last_name = row.cells[2].textContent.toLowerCase();
-        const position = row.cells[3].textContent.toLowerCase();
-        const email = row.cells[4].textContent.toLowerCase();
-        const row_department = row.cells[5].textContent.toLowerCase();
+        const staff_idNum = row.cells[0].textContent.toLowerCase();
+        const staff_first_name = row.cells[1].textContent.toLowerCase();
+        const staff_last_name = row.cells[2].textContent.toLowerCase();
+        const position_text = row.cells[3].textContent.toLowerCase();
+        const phinmaed_email = row.cells[4].textContent.toLowerCase();
 
-        const matchesSearch = staff_id.includes(filter) || first_name.includes(filter) || last_name.includes(filter) || position.includes(filter) || email.includes(filter);
-        const matchesDepartment = department === "" || row_department === department;
+        const matchesSearch = staff_idNum.includes(filter) || staff_first_name.includes(filter) || staff_last_name.includes(filter) || position_text.includes(filter) || phinmaed_email.includes(filter);
+        const matchesPosition = position === "" || position_text === position;
 
-        if (matchesSearch && matchesDepartment) {
+        if (matchesSearch && matchesPosition) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
@@ -336,7 +344,7 @@ function filterTable() {
 }
 
 document.getElementById('search4').addEventListener('input', filterTable);
-document.getElementById('userFilter').addEventListener('change', filterTable);
+document.getElementById('positionFilter').addEventListener('change', filterTable);
 
 function seeMoreStaff(staffId) {
     fetch(`get_staff_details.php?staff_id=${staffId}`)
@@ -346,23 +354,19 @@ function seeMoreStaff(staffId) {
                 <table class="staffdetail" style="width: 100%; border-collapse: collapse;">
                     <tr>
                         <th style="text-align: left; padding: 8px;">Staff ID</th>
-                        <td style="padding: 8px;">${data.staff.staff_id}</td>
+                        <td style="padding: 8px;">${data.staff.staff_idNum}</td>
                     </tr>
                     <tr>
                         <th style="text-align: left; padding: 8px;">Name</th>
-                        <td style="padding: 8px;">${data.staff.first_name} ${data.staff.last_name}</td>
+                        <td style="padding: 8px;">${data.staff.staff_first_name} ${data.staff.staff_last_name}</td>
                     </tr>
                     <tr>
                         <th style="text-align: left; padding: 8px;">Position</th>
                         <td style="padding: 8px;">${data.staff.position}</td>
                     </tr>
                     <tr>
-                        <th style="text-align: left; padding: 8px;">Email</th>
-                        <td style="padding: 8px;">${data.staff.email}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">Department</th>
-                        <td style="padding: 8px;">${data.staff.department}</td>
+                        <th style="text-align: left; padding: 8px;">phinmaed_email</th>
+                        <td style="padding: 8px;">${data.staff.phinmaed_email}</td>
                     </tr>
                 </table>
                 `;

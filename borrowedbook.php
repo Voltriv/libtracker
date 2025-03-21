@@ -152,7 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    function updateStatus(transactionId, action) {
+    
+});
+function updateStatus(transactionId, action) {
         fetch('update_status.php', {
             method: 'POST',
             headers: {
@@ -178,7 +180,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Fetch error:', error);
         });
     }
-});
 
 function filterTable() {
     const searchInput = document.getElementById('search3');
