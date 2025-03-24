@@ -160,3 +160,15 @@ a {
     border-radius: 5px;
     font-size: 16px;
 }
+
+#toggleLoginType {
+    width: 200px;
+    height: auto;
+    margin-top: 5px;    
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    text-align: center;
+    position: flex;
+    cursor: pointer;
+}

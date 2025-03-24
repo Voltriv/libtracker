@@ -80,7 +80,6 @@ include 'db_config.php';
                                         <div class='actions_button'>
                                             <button type='submit' name='toggle_staff_status' class='toggle-staff-status-btn {$toggleClass}' onclick='return confirmToggleStatus(event, \"{$toggleStatus}\")'><i class='bx {$toggleIcon}'></i> {$toggleStatus}</button>
                                             <button type='button' class='edit-btn' onclick='editStaff({$row['staff_id']})'><i class='bx bx-edit ' ></i></button>
-                                            <button type='button' class='three-dot-btn-staff' onclick='seeMoreStaff({$row['staff_id']})'><i class='bx bx-dots-vertical-rounded'></i></button>
                                         </div>
                                     </form>
                                 </td>
@@ -101,6 +100,27 @@ include 'db_config.php';
         <div id="floatingTableContent"></div>
     </div>
 
+
+    <div id="addStaffForm" class="addstaffform-container">
+    <h1>Add Staff</h1>
+    <form action="" method="POST" class="modal-content" id="staffForm" enctype="multipart/form-data">
+        <input type="text" name="staff_idNum" id="staff_idNum" placeholder="Staff ID" required>
+        <input type="text" name="staff_first_name" id="staff_first_name" placeholder="First Name" required>
+        <input type="text" name="staff_last_name" id="staff_last_name" placeholder="Last Name" required>
+        <select name="position" required>
+            <option value="" disabled selected>Select Position</option>
+            <option value="Librarian - Periodical Section">Librarian - Periodical Section</option>
+            <option value="Librarian - General Circulation Section">Librarian - General Circulation Section</option>
+            <option value="Librarian - Law Library">Librarian - Law Library</option>
+            <option value="Library Assistant - Dissertation Section">Library Assistant - Dissertation Section</option>
+            <option value="Library Assistant - Technical Section">Library Assistant - Technical Section</option>
+        </select>
+        <input type="email" name="phinmaed_email" id="phinmaed_email" placeholder="Email" required>
+        <button type="submit">Add Staff</button>
+        <button type="button" id="closeStaffFormButton">Cancel</button>
+    </form>
+</div>
+
     <!-- Edit Staff Sliding Form -->
     <div id="editStaffContainer" class="edit-staff-container">
         <h1>Edit Staff</h1>
@@ -117,10 +137,6 @@ include 'db_config.php';
                 <option value="Library Assistant - Technical Section">Library Assistant - Technical Section</option>
             </select>
             <input type="email" name="phinmaed_email" id="editphinmaed_email" placeholder="Email" required>
-            <select name="status" id="editStatus" required>
-                <option value="1">Active</option>
-                <option value="0">Deactivated</option>
-            </select>
             <button type="submit" name="update_staff" class="update-staff-btn">Update</button>
             <button type="button" id="closeStaffFormButton" class="close-staff-form" onclick="closeEditFormStaff()">Cancel</button>
         </form>
@@ -155,7 +171,6 @@ document.getElementById('editStaffForm').addEventListener('submit', function (ev
             row.cells[2].textContent = formData.get("staff_last_name");
             row.cells[3].textContent = formData.get("position");
             row.cells[4].textContent = formData.get("phinmaed_email");
-            row.cells[5].textContent = formData.get("status") == 1 ? 'Active' : 'Deactivated';
         } else {
             alert('Error updating staff: ' + data.message);
         }
@@ -267,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function() {
             'staff_last_name': 2,
             'position': 3,
             'phinmaed_email': 4,
-            'status': 5
         };
         return columnOrder[column];
     }
@@ -289,7 +303,6 @@ function editStaff(staffId) {
             document.getElementById('editStaffLastName').value = data.staff.staff_last_name || '';
             document.getElementById('editPosition').value = data.staff.position || '';
                 document.getElementById('editphinmaed_email').value = data.staff.phinmaed_email;
-                document.getElementById('editStatus').value = data.staff.status;
 
                 console.log("First Name:", document.getElementById('editStaffFirstName').value);
             console.log("Last Name:", document.getElementById('editStaffLastName').value);
@@ -313,10 +326,8 @@ function editStaff(staffId) {
         .catch(error => console.error('Error:', error));
 }
 
-function closeEditFormStaff() {
-    document.getElementById('editStaffContainer').classList.remove('active');
-    document.querySelector('.container5').classList.remove('shifted');
-}
+
+
 
 function filterTable() {
     const searchInput = document.getElementById('search4');
@@ -346,35 +357,41 @@ function filterTable() {
 document.getElementById('search4').addEventListener('input', filterTable);
 document.getElementById('positionFilter').addEventListener('change', filterTable);
 
-function seeMoreStaff(staffId) {
-    fetch(`get_staff_details.php?staff_id=${staffId}`)
-        .then(response => response.json())
-        .then(data => {
-            let content = `
-                <table class="staffdetail" style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">Staff ID</th>
-                        <td style="padding: 8px;">${data.staff.staff_idNum}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">Name</th>
-                        <td style="padding: 8px;">${data.staff.staff_first_name} ${data.staff.staff_last_name}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">Position</th>
-                        <td style="padding: 8px;">${data.staff.position}</td>
-                    </tr>
-                    <tr>
-                        <th style="text-align: left; padding: 8px;">phinmaed_email</th>
-                        <td style="padding: 8px;">${data.staff.phinmaed_email}</td>
-                    </tr>
-                </table>
-                `;
 
-            document.getElementById('floatingTableContent').innerHTML = content;
-            document.getElementById('floatingTableContainer').classList.add('active');
-        });
+
+document.addEventListener('click', function(event) {
+    const addStaffForm = document.getElementById('addStaffForm');
+    const editStaffContainer = document.getElementById('editStaffContainer');
+
+    if (addStaffForm && !addStaffForm.contains(event.target) && !event.target.closest('#openStaffFormButton')) {
+        addStaffForm.classList.remove('active');
+        document.querySelector('.container5')?.classList.remove('shifted');
+    }
+    if (editStaffContainer && !editStaffContainer.contains(event.target) && !event.target.classList.contains('edit-btn')) {
+        editStaffContainer.classList.remove('active');
+        document.querySelector('.container5')?.classList.remove('shifted');
+    }
+});
+
+document.getElementById('openStaffFormButton').addEventListener('click', function () {
+    document.getElementById('addStaffForm').classList.add('active');
+    document.querySelector('.container5')?.classList.add('shifted');
+});
+
+document.getElementById('closeStaffFormButton').addEventListener('click', function () {
+    document.getElementById('addStaffForm').classList.remove('active');
+    document.querySelector('.container5')?.classList.remove('shifted');
+});
+
+document.getElementById('closeEditStaffFormButton').addEventListener('click', function() {
+    closeEditFormStaff();
+});
+
+function closeEditFormStaff() {
+    document.getElementById('editStaffContainer').classList.remove('active');
+    document.querySelector('.container5')?.classList.remove('shifted');
 }
+
 
 function closeFloatingTable() {
     document.getElementById('floatingTableContainer').classList.remove('active');

@@ -194,7 +194,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const action = this.textContent.trim();
             if (confirmToggleStatus(event, action)) {
                 toggleUserStatus(userId, action);
-                window.location.reload(self);
             }
         });
     });

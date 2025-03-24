@@ -16,13 +16,13 @@ try {
             
             $firstName = $data['firstName'];
             $lastName = $data['lastName'];
-            $studentId = $data['studentId'];
+            $studentId = $data['studentID'];
+            $schoolEmail = $data['phinmaEmail'];
             $password = $data['password'];
-            $yearLevel = $data['yearLevel'];
             $program = $data['program'];
-            $schoolEmail = $data['schoolEmail'];
-            $contactNumber = $data['contactNumber'];
+            $yearLevel = $data['yearLevel'];
             $department = $data['department'];
+            $contactNumber = $data['contactNumber'];
 
             // Check for duplicate student ID
             $stmt_check = $connect->prepare("SELECT student_id FROM user WHERE student_id = ?");

@@ -95,6 +95,7 @@
 
 <!-- Add the audio element for the scanner sound -->
 <audio id="scannerSound" src="scanner-beep.mp3" preload="auto"></audio>
+<audio id="errorSound" src="error.mp3" preload="auto"></audio>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -103,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const scannerContainer = document.getElementById('scanner-container1');
     const container = document.querySelector('.container2');
     const scannerSound = document.getElementById('scannerSound');
+    const errorSound = document.getElementById('errorSound');
     const attendanceTableBody = document.getElementById('attendanceTableBody');
     const searchInput = document.getElementById('search1');
     const departmentFilter = document.getElementById('departmentFilter');
@@ -207,45 +209,46 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScannedCode = code;
             lastScannedTime = currentTime;
             console.log("Barcode detected and processed : [" + code + "]", data);
-            scannerSound.play().catch(error => {
-                console.error('Error playing sound:', error);
-            });
+            
             markAttendance(code);
         }
     }
 
     function markAttendance(studentId) {
-        fetch('mark_attendance.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ student_id: studentId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                scannerSound.play().catch(error => {
+    fetch('mark_attendance.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ student_id: studentId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            scannerSound.play().catch(error => {
+                console.error('Error playing sound:', error);
+            });
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${data.student_id}</td>
+                <td>${data.first_name}</td>
+                <td>${data.last_name}</td>
+                <td>${data.department}</td>
+                <td>${data.year_level}</td>
+                <td>${data.entry_time}</td>
+            `;
+            attendanceTableBody.prepend(newRow);
+        } else {
+            errorSound.play().catch(error => {
                     console.error('Error playing sound:', error);
                 });
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${data.student_id}</td>
-                    <td>${data.first_name}</td>
-                    <td>${data.last_name}</td>
-                    <td>${data.department}</td>
-                    <td>${data.year_level}</td>
-                    <td>${data.entry_time}</td>
-                `;
-                attendanceTableBody.prepend(newRow);
-            } else {
-                alert('Error marking attendance: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+            alert('Error marking attendance: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
     function attendance_filterTable() {
         const filter = searchInput.value.toLowerCase();

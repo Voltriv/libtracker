@@ -21,6 +21,18 @@ while ($row = $result->fetch_assoc()) {
     $attendanceData[$row['department']] = $row['attendance_count'];
 }
 
+// Fetch recent borrowed books data
+$recentBorrowedBooks = [];
+$query = "SELECT books.title, borrow.borrowed_date, user.first_name, user.last_name 
+          FROM borrow 
+          JOIN books ON borrow.book_code = books.book_code
+          JOIN user ON borrow.student_id = user.student_id
+          ORDER BY borrow.borrowed_date DESC 
+          LIMIT 5";
+$result = $conn->query($query);
+while ($row = $result->fetch_assoc()) {
+    $recentBorrowedBooks[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +44,6 @@ while ($row = $result->fetch_assoc()) {
     <link rel="stylesheet" href="home.css">
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <title>Dashboard</title>
-    
 </head>
 <body>
 <nav class="header">
@@ -42,7 +53,7 @@ while ($row = $result->fetch_assoc()) {
     <div class="header-actions">
         <button id="notificationButton" class="notification-btn">
             <i class='bx bx-bell'></i>
-            <span class="badge hidden">0</s> <!-- Badge to show unread count -->
+            <span class="badge hidden">0</span> <!-- Badge to show unread count -->
         </button>
         <div class="header-right">
             <?php echo date('l, F j, Y g:i A'); ?>
@@ -83,72 +94,94 @@ while ($row = $result->fetch_assoc()) {
                 </div>
             </div>
         </div>
-        <div class="dashboard-box"><h2>BORROWED BOOK</h2></div>
+        <div class="dashboard-box">
+            <h2>BORROWED BOOK</h2>
+            <div class="borrowed-books-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Borrowed By</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($recentBorrowedBooks as $book) {
+                            echo "<tr>
+                                    <td>{$book['title']}</td>
+                                    <td>{$book['first_name']} {$book['last_name']}</td>
+                                    <td>{$book['borrowed_date']}</td>
+                                  </tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var departmentColors = {
-    'CAHS': '#008000',  // Green
-    'CCJE': '#808080',  // Gray
-    'CEA': '#FF0000',   // Red
-    'CELA': '#0000FF',  // Blue
-    'CITE': '#000000',  // Black
-    'CMA': '#FFFF00',   // Yellow
-    'COL': '#FFA500',   // Orange (Default for missing)
-    'SHS': '#800080'    // Purple (Default for missing)
-};
+            'CAHS': '#008000',  // Green
+            'CCJE': '#808080',  // Gray
+            'CEA': '#FF0000',   // Red
+            'CELA': '#0000FF',  // Blue
+            'CITE': '#000000',  // Black
+            'CMA': '#FFFF00',   // Yellow
+            'COL': '#FFA500',   // Orange (Default for missing)
+            'SHS': '#800080'    // Purple (Default for missing)
+        };
 
-// Pass PHP attendance data to JavaScript
-var attendanceData = <?php echo json_encode($attendanceData); ?>;
+        // Pass PHP attendance data to JavaScript
+        var attendanceData = <?php echo json_encode($attendanceData); ?>;
 
-// Prepare data for the chart
-var labels = Object.keys(attendanceData);
-var data = Object.values(attendanceData);
+        // Prepare data for the chart
+        var labels = Object.keys(attendanceData);
+        var data = Object.values(attendanceData);
 
-// Assign colors based on department
-var backgroundColors = labels.map(dept => departmentColors[dept] || '#808080'); // Default gray if missing
+        // Assign colors based on department
+        var backgroundColors = labels.map(dept => departmentColors[dept] || '#808080'); // Default gray if missing
 
-var ctx = document.getElementById('attendanceChart').getContext('2d');
-var attendanceChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Attendance Count',
-            data: data,
-            backgroundColor: backgroundColors,
-            borderColor: '#fff',
-            borderWidth: 0,
-            hoverOffset: 10
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    font: {
-                        size: 14
-                    },
-                    color: "#333"
-                }
+        var ctx = document.getElementById('attendanceChart').getContext('2d');
+        var attendanceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Attendance Count',
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    borderColor: '#fff',
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
             },
-            tooltip: {
-                enabled: true,
-                backgroundColor: "rgba(0,0,0,0.7)",
-                bodyFont: {
-                    size: 14
-                },
-                padding: 10
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 14
+                            },
+                            color: "#333"
+                        }
+                    },
+                    tooltip: {
+                        enabled: true,
+                        backgroundColor: "rgba(0,0,0,0.7)",
+                        bodyFont: {
+                            size: 14
+                        },
+                        padding: 10
+                    }
+                }
             }
-        }
-    }
-});
-
-
+        });
     </script>
 </body>
 </html>
