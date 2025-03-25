@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Fetch unread notifications count on load and every 5 seconds
     fetchNotificationCount();
-    setInterval(fetchNotificationCount, 2000);
+    setInterval(fetchNotificationCount, 5000);
 });
 
 

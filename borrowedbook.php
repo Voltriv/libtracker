@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
 });
 function updateStatus(transactionId, action) {
+    if (confirm(`Are you sure you want to mark as ${action} this transaction?`)) {
         fetch('update_status.php', {
             method: 'POST',
             headers: {
@@ -179,7 +180,11 @@ function updateStatus(transactionId, action) {
         .catch(error => {
             console.error('Fetch error:', error);
         });
+    } else {
+        console.log('Action canceled by admin.');
     }
+}
+
 
 function filterTable() {
     const searchInput = document.getElementById('search3');

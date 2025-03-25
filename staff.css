@@ -12,6 +12,25 @@
     padding: 10px;
 
 }
+
+.table-container2 table td:nth-child(5),
+.table-container2 table th:nth-child(5) {
+    min-width: 250px; /* Increase this value as needed */
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-container2 table td:nth-child(4),
+.table-container2 table th:nth-child(4) {
+    min-width: 250px; /* Increase this value as needed */
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .three-dot-btn-staff {
     background: none;
     border: none;

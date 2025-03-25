@@ -1,35 +1,45 @@
 <?php
 include 'db_config.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
     $staff_idNum = $_POST['staff_idNum'];
-    $first_name = $_POST['staff_first_name'];
-    $last_name = $_POST['staff_last_name'];
+    $staff_first_name = $_POST['staff_first_name'];
+    $staff_last_name = $_POST['staff_last_name'];
     $position = $_POST['position'];
-    $email = $_POST['phinmaed_email'];
+    $phinmaed_email = $_POST['phinmaed_email'];
+    $status = 1; // Default to active
 
-    $sql = "INSERT INTO staff (staff_idNum, staff_first_name, staff_last_name, position, phinmaed_email, status)
-            VALUES (?, ?, ?, ?, ?, 1)";
+    // Insert into database
+    $sql = "INSERT INTO staff (staff_idNum, staff_first_name, staff_last_name, position, phinmaed_email, status) 
+            VALUES (?, ?, ?, ?, ?, ?)";
+    
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $staff_idNum, $first_name, $last_name, $position, $email);
-
+    $stmt->bind_param("sssssi", $staff_idNum, $staff_first_name, $staff_last_name, $position, $phinmaed_email, $status);
+    
     if ($stmt->execute()) {
-        $staff_id = $conn->insert_id;
+        $staff_id = $stmt->insert_id;
         $response = [
             'success' => true,
-            'staff' => [
-                'staff_id' => $staff_id,
-                'staff_idNum' => $staff_idNum,
-                'staff_first_name' => $first_name,
-                'staff_last_name' => $last_name,
-                'position' => $position,
-                'phinmaed_email' => $email,
-                'status' => 1
-            ]
+            'staff_id' => $staff_id,
+            'staff_idNum' => $staff_idNum,
+            'staff_first_name' => $staff_first_name,
+            'staff_last_name' => $staff_last_name,
+            'position' => $position,
+            'phinmaed_email' => $phinmaed_email
         ];
     } else {
-        $response = ['success' => false, 'message' => 'Failed to add staff.'];
+        $response = [
+            'success' => false,
+            'message' => 'Error adding staff: ' . $conn->error
+        ];
     }
+    
+    $stmt->close();
+    $conn->close();
+    
+    header('Content-Type: application/json');
     echo json_encode($response);
+    exit();
 }
 ?>

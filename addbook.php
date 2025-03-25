@@ -28,13 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Handle file uploads
         if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
             $imageName = basename($_FILES['book_cover']['name']);
-            $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
+            $image_url = 'http://192.168.1.248/LibTrack/libtracker/book_images/' . $imageName;
             move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
         }
         
         if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
             $pdfName = basename($_FILES['book_pdf']['name']);
-            $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
+            $pdf_url = 'http://192.168.1.248/LibTrack/libtracker/book_pdf/' . $pdfName;
             move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
         }
 
@@ -59,13 +59,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Handle file uploads
             if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
                 $imageName = basename($_FILES['book_cover']['name']);
-                $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
+                $image_url = 'http://192.168.1.248/LibTrack/libtracker/book_images/' . $imageName;
                 move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
             }
             
             if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
                 $pdfName = basename($_FILES['book_pdf']['name']);
-                $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
+                $pdf_url = 'http://192.168.1.248/LibTrack/libtracker/book_pdf/' . $pdfName;
                 move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
             }
 
@@ -117,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container" id="container5">
     <div class="search-sort">
-        <button id="openFormButton" class="add-btn">+ ADD BOOK</button>
+        <button id="openFormButton" class="add-btn"><i class='bx bxs-book-add'></i>&nbsp; ADD BOOK</button>
         <input type="text" id="search" placeholder="Search..." >
         <select id="bookmanagementFilter" class="filter-attendance">
             <option value="">All categorys</option>

@@ -84,7 +84,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
                 <li class="nav-link">
                     <a href="#staff">
-                    <i class='bx bx-user icon' ></i>
+                    <i class='bx bxs-user icon' ></i>
                         <span class="text nav-text">Staff</span>
                     </a>
                 </li>
