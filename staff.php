@@ -239,6 +239,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const action = this.textContent.trim();
             if (confirmToggleStatus(event, action)) {
                 toggleStaffStatus(staffId, action);
+                location.reload();
+
             }
         });
     });
@@ -406,6 +408,8 @@ document.getElementById('editStaffForm').addEventListener('submit', function(e) 
         if (data.success) {
             alert('Staff updated successfully!');
             closeEditFormStaff();
+            location.reload();
+
             
             // Update the table row - improved selector
             const row = document.querySelector(`tr[data-id="${staffId}"]`);

@@ -51,6 +51,7 @@ include 'db_config.php';
                     <th data-column4="student_id">Student Id<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="first_name">First Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="last_name">Last Name<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column4="program">Program<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="department">Department<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="year_level">Year Level<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="phinmaed_email">Phinma Email<i class='bx bx-sort sort-icon'></i></th>
@@ -73,6 +74,7 @@ include 'db_config.php';
                                 <td>{$row['student_id']}</td>
                                 <td>{$row['first_name']}</td>
                                 <td>{$row['last_name']}</td>
+                                <td>{$row['program']}</td>
                                 <td>{$row['department']}</td>
                                 <td>{$row['year_level']}</td>
                                 <td>{$row['phinmaed_email']}</td>
@@ -115,6 +117,16 @@ include 'db_config.php';
             <input type="hidden" name="user_id" id="editUserId">
             <input type="text" name="first_name" placeholder="First Name" id="editFirstName" required>
             <input type="text" name="last_name" placeholder="Last Name" id="editLastName" required>
+            <select name="program" id="editProgram" required>
+                <option value="CITE">CITE</option>
+                <option value="CAHS">CAHS</option>
+                <option value="CCJE">CCJE</option>
+                <option value="CEA">CEA</option>
+                <option value="CELA">CELA</option>
+                <option value="CMA">CMA</option>
+                <option value="COL">COL</option>
+                <option value="SHS">SHS</option>
+            </select>
             <select name="department" id="editCategory" required>
                 <option value="CITE">CITE</option>
                 <option value="CAHS">CAHS</option>
@@ -168,9 +180,10 @@ document.getElementById('editUserForm').addEventListener('submit', function (eve
             const row = document.querySelector(`input[value='${formData.get("user_id")}']`).closest('tr');
             row.cells[1].textContent = formData.get("first_name");
             row.cells[2].textContent = formData.get("last_name");
-            row.cells[3].textContent = formData.get("department");
-            row.cells[4].textContent = formData.get("year_level");
-            row.cells[5].textContent = formData.get("phinmaed_email");
+            row.cells[3].textContent = formData.get("program");
+            row.cells[4].textContent = formData.get("department");
+            row.cells[5].textContent = formData.get("year_level");
+            row.cells[6].textContent = formData.get("phinmaed_email");
         } else {
             alert('Error updating user: ' + data.message);
         }
@@ -194,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const action = this.textContent.trim();
             if (confirmToggleStatus(event, action)) {
                 toggleUserStatus(userId, action);
+                
             }
         });
     });
@@ -208,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(data => {
         if (data.success) {
             const row = document.querySelector(`input[value='${userId}']`).closest('tr');
-            const statusCell = row.cells[7]; // Status column
+            const statusCell = row.cells[8]; // Status column
             const button = row.querySelector('.toggle-status-btn');
 
             if (data.new_status === 1) {
@@ -284,10 +298,11 @@ document.addEventListener('DOMContentLoaded', function () {
             'student_id': 0,
             'first_name': 1,
             'last_name': 2,
-            'department': 3,
-            'year_level': 4,
-            'phinmaed_email': 5,
-            'status': 7
+            'program': 4,
+            'department': 4,
+            'year_level': 5,
+            'phinmaed_email': 6,
+            'status': 8
         };
         return columnOrder[column];
     }
@@ -310,6 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('editUserId').value = data.user_id;
                 document.getElementById('editFirstName').value = data.first_name;
                 document.getElementById('editLastName').value = data.last_name;
+                document.getElementById('editProgram').value = data.program;
                 document.getElementById('editCategory').value = data.department;
                 document.getElementById('editYearLevel').value = data.year_level;
                 document.getElementById('editEmail').value = data.phinmaed_email;
@@ -355,12 +371,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const student_id = row.cells[0].textContent.toLowerCase();
             const first_name = row.cells[1].textContent.toLowerCase();
             const last_name = row.cells[2].textContent.toLowerCase();
-            const row_department = row.cells[3].textContent.toLowerCase();
-            const year_level = row.cells[4].textContent.toLowerCase();
-            const phinmaed_email = row.cells[5].textContent.toLowerCase();
-            const contact_number = row.cells[6].textContent.toLowerCase();
+            const program = row.cells[3].textContent.toLowerCase();
 
-            const matchesSearch = student_id.includes(filter) || first_name.includes(filter) || last_name.includes(filter) || year_level.includes(filter) || phinmaed_email.includes(filter) || contact_number.includes(filter);
+            const row_department = row.cells[4].textContent.toLowerCase();
+            const year_level = row.cells[5].textContent.toLowerCase();
+            const phinmaed_email = row.cells[6].textContent.toLowerCase();
+            const contact_number = row.cells[7].textContent.toLowerCase();
+
+            const matchesSearch = student_id.includes(filter) || first_name.includes(filter) || last_name.includes(filter) || program.includes(filter) || year_level.includes(filter) || phinmaed_email.includes(filter) || contact_number.includes(filter);
             const matchesDepartment = department === "" || row_department === department;
 
             if (matchesSearch && matchesDepartment) {
@@ -387,6 +405,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <tr>
                             <th style="text-align: left; padding: 8px;">Name</th>
                             <td style="padding: 8px;">${data.user.first_name} ${data.user.last_name}</td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left; padding: 8px;">Proram</th>
+                            <td style="padding: 8px;">${data.user.program}</td>
                         </tr>
                         <tr>
                             <th style="text-align: left; padding: 8px;">Department</th>

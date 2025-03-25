@@ -24,9 +24,11 @@ try {
             $department = $data['department'];
             $contactNumber = $data['contactNumber'];
 
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
             // Check for duplicate student ID
-            $stmt_check = $connect->prepare("SELECT student_id FROM user WHERE student_id = ?");
-            $stmt_check->bind_param("s", $studentId);
+            $stmt_check = $connect->prepare("SELECT student_id FROM user WHERE student_id = ? OR phinmaed_email = ?");
+            $stmt_check->bind_param("ss", $studentId, $schoolEmail);
             $stmt_check->execute();
             $result_check = $stmt_check->get_result();
 
@@ -35,7 +37,7 @@ try {
                 $response = array("status" => "error", "message" => "Student ID already exists");
             } else {
                 $stmt = $connect->prepare("INSERT INTO user (first_name, last_name, student_id, password, year_level, program, phinmaed_email, contact_number, department) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("sssssssss", $firstName, $lastName, $studentId, $password, $yearLevel, $program, $schoolEmail, $contactNumber, $department);
+                $stmt->bind_param("sssssssss", $firstName, $lastName, $studentId, $hashedPassword, $yearLevel, $program, $schoolEmail, $contactNumber, $department);
 
                 if ($stmt->execute()) {
                     $response = array("status" => "success");

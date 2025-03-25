@@ -1,9 +1,23 @@
 <?php
-include 'db_config.php'; // Ensure this file connects to the database
+include 'db_config.php';
 
-$query = "SELECT COUNT(*) AS unread FROM notifications WHERE status = 'unread'";
+header('Content-Type: application/json');
+
+// Fetch the 5 most recent notifications
+$query = "SELECT id, message, created_at, status 
+          FROM notifications 
+          ORDER BY created_at DESC 
+          LIMIT 5";
 $result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
 
-echo json_encode(["unread" => $row['unread']]);
+if (!$result) {
+    echo json_encode(["error" => mysqli_error($conn)]); // Show SQL error
+    exit;
+}
+
+$notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+// Debugging output
+echo json_encode($notifications);
+exit;
 ?>

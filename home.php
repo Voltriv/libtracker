@@ -130,8 +130,8 @@ while ($row = $result->fetch_assoc()) {
             'CELA': '#0000FF',  // Blue
             'CITE': '#000000',  // Black
             'CMA': '#FFFF00',   // Yellow
-            'COL': '#FFA500',   // Orange (Default for missing)
-            'SHS': '#800080'    // Purple (Default for missing)
+            'COL': '#FFA500',   // Orange 
+            'SHS': '#47E0CC'    // Purple 
         };
 
         // Pass PHP attendance data to JavaScript
@@ -162,13 +162,32 @@ while ($row = $result->fetch_assoc()) {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
+                    scales: {
+    x: {
+        grid: {
+            display: false // Removes x-axis grid lines
+        },
+        ticks: {
+            color: "#666" // Changes x-axis label color
+        }
+    },
+    y: {
+        beginAtZero: true, // Forces y-axis to start at 0
+        ticks: {
+            color: "#666" // Changes y-axis label color
+        }
+    }
+},
+animation: {
+    duration: 1000 // Smooth animations (1 second)
+},
                     legend: {
                         position: 'bottom',
                         labels: {
                             font: {
-                                size: 14
+                                size: 12
                             },
-                            color: "#333"
+                            color: "#000000"
                         }
                     },
                     tooltip: {
@@ -179,6 +198,7 @@ while ($row = $result->fetch_assoc()) {
                         },
                         padding: 10
                     }
+                    
                 }
             }
         });

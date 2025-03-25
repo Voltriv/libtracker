@@ -1,7 +1,13 @@
 <?php
 include 'db_config.php';
 
-mysqli_query($conn, "UPDATE notifications SET status = 'read' WHERE status = 'unread'");
-echo json_encode(["status" => "success"]);
-?>
+header('Content-Type: application/json');
 
+// Mark all unread notifications as read
+$query = "UPDATE notifications 
+          SET status = 'read' 
+          WHERE status = 'unread'";
+mysqli_query($conn, $query);
+
+echo json_encode(['success' => true]);
+?>

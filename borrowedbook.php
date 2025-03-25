@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Fetch borrowed books every 5 seconds (5000 milliseconds)
-    setInterval(fetchBorrowedBooks, 1000);
+    setInterval(fetchBorrowedBooks, 5000);
 
     // Initial fetch
     fetchBorrowedBooks();

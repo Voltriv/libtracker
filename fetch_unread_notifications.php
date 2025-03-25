@@ -1,9 +1,14 @@
 <?php
 include 'db_config.php';
 
-$query = "SELECT COUNT(*) AS unread FROM notifications WHERE status = 'unread'";
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
+header('Content-Type: application/json');
 
-echo json_encode(["unread" => $row['unread']]);
+// Count unread notifications
+$query = "SELECT COUNT(*) as unread 
+          FROM notifications 
+          WHERE status = 'unread'";
+$result = mysqli_query($conn, $query);
+$data = mysqli_fetch_assoc($result);
+
+echo json_encode($data);
 ?>

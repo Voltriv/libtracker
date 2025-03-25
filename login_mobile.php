@@ -22,7 +22,9 @@ if ($connect) {
 
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
-            if ($password == $row['password']) {
+            $storedHashedPassword = $row['password'];
+
+            if (password_verify($password, $storedHashedPassword)) {
                 echo json_encode(array("status" => "success"));
             } else {
                 // Incorrect password
