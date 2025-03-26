@@ -5,8 +5,14 @@ $imageFolder = "C:/xampp/htdocs/LibTrack/libtracker/book_images/";
 $pdfFolder = "C:/xampp/htdocs/LibTrack/libtracker/book_pdf/";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Sanitize input to prevent SQL injection
+    function sanitize($data, $conn) {
+        return mysqli_real_escape_string($conn, trim($data));
+    }
+
     if (isset($_POST["delete_book"])) {
-        $book_id = $_POST["book_id"];
+        $book_id = (int)$_POST["book_id"]; // Cast to int to prevent injection
         $delete_sql = "DELETE FROM books WHERE book_id = $book_id";
         if ($conn->query($delete_sql) === TRUE) {
             header("Location: " . $_SERVER['PHP_SELF']);
@@ -14,61 +20,99 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "<script>alert('Error deleting book: " . $conn->error . "');</script>";
         }
-    } elseif (isset($_POST["update_book"])) {
-        $book_id = $_POST["book_id"];
-        $title = $_POST["title"];
-        $author = $_POST["author"];
-        $book_code = $_POST["book_code"];
-        $copies_available = $_POST["copies_available"];
-        $total_copies = $_POST["total_copies"];
-        $category = $_POST["category"];
+    } 
+    
+    elseif (isset($_POST["update_book"])) {
+        $book_id = (int)$_POST["book_id"];
+        $title = sanitize($_POST["title"], $conn);
+        $author = sanitize($_POST["author"], $conn);
+        $book_code = sanitize($_POST["book_code"], $conn);
+        $copies_available = (int)$_POST["copies_available"];
+        $total_copies = (int)$_POST["total_copies"];
+        $category = sanitize($_POST["category"], $conn);
         $image_url = $_POST["current_image_url"];
         $pdf_url = $_POST["current_pdf_url"];
 
-        // Handle file uploads
+        // Handle file uploads - Image
         if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
             $imageName = basename($_FILES['book_cover']['name']);
-            $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
-            move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
+            $imageFileType = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+            if (in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+                $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
+                move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
+            } else {
+                echo "<script>alert('Invalid image file type.');</script>";
+            }
         }
         
+        // Handle file uploads - PDF
         if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
             $pdfName = basename($_FILES['book_pdf']['name']);
-            $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
-            move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
+            $pdfFileType = strtolower(pathinfo($pdfName, PATHINFO_EXTENSION));
+            if ($pdfFileType == 'pdf') {
+                $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
+                move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
+            } else {
+                echo "<script>alert('Invalid PDF file type.');</script>";
+            }
         }
 
-        $update_sql = "UPDATE books SET title = '$title', author = '$author', book_code = '$book_code', copies_available = '$copies_available', total_copies = '$total_copies', category = '$category', image_url = '$image_url', pdf_url = '$pdf_url' WHERE book_id = $book_id";
+        // Update Query
+        $update_sql = "UPDATE books SET 
+                       title = '$title', 
+                       author = '$author', 
+                       book_code = '$book_code', 
+                       copies_available = '$copies_available', 
+                       total_copies = '$total_copies', 
+                       category = '$category', 
+                       image_url = '$image_url', 
+                       pdf_url = '$pdf_url' 
+                       WHERE book_id = $book_id";
+
         if ($conn->query($update_sql) === TRUE) {
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         } else {
             echo "<script>alert('Error updating book: " . $conn->error . "');</script>";
         }
-    } else {
+    } 
+    
+    else {
         if (isset($_POST['title'], $_POST['author'], $_POST['book_code'], $_POST['copies_available'], $_POST['total_copies'], $_POST['category'])) {
-            $title = $_POST['title'];
-            $author = $_POST['author'];
-            $book_code = $_POST['book_code'];
-            $copies_available = $_POST['copies_available'];
-            $total_copies = $_POST['total_copies'];
-            $category = $_POST['category'];
+            $title = sanitize($_POST['title'], $conn);
+            $author = sanitize($_POST['author'], $conn);
+            $book_code = sanitize($_POST['book_code'], $conn);
+            $copies_available = (int)$_POST['copies_available'];
+            $total_copies = (int)$_POST['total_copies'];
+            $category = sanitize($_POST['category'], $conn);
             $image_url = '';
             $pdf_url = '';
 
-            // Handle file uploads
+            // Handle file uploads - Image
             if (isset($_FILES['book_cover']) && $_FILES['book_cover']['error'] == 0) {
                 $imageName = basename($_FILES['book_cover']['name']);
-                $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
-                move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
+                $imageFileType = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+                if (in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+                    $image_url = 'http://192.168.23.209/LibTrack/libtracker/book_images/' . $imageName;
+                    move_uploaded_file($_FILES['book_cover']['tmp_name'], $imageFolder . $imageName);
+                } else {
+                    echo "<script>alert('Invalid image file type.');</script>";
+                }
             }
             
+            // Handle file uploads - PDF
             if (isset($_FILES['book_pdf']) && $_FILES['book_pdf']['error'] == 0) {
                 $pdfName = basename($_FILES['book_pdf']['name']);
-                $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
-                move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
+                $pdfFileType = strtolower(pathinfo($pdfName, PATHINFO_EXTENSION));
+                if ($pdfFileType == 'pdf') {
+                    $pdf_url = 'http://192.168.23.209/LibTrack/libtracker/book_pdf/' . $pdfName;
+                    move_uploaded_file($_FILES['book_pdf']['tmp_name'], $pdfFolder . $pdfName);
+                } else {
+                    echo "<script>alert('Invalid PDF file type.');</script>";
+                }
             }
 
+            // Insert Query
             $sql = "INSERT INTO books (title, author, book_code, copies_available, total_copies, category, image_url, pdf_url) 
                     VALUES ('$title', '$author', '$book_code', '$copies_available', '$total_copies', '$category', '$image_url', '$pdf_url')";
 
@@ -84,6 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -137,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="" method="POST" class="modal-content" id="bookForm" enctype="multipart/form-data">
             <input type="text" name="title" id="title" placeholder="Book Title" required>
             <input type="text" name="author" id="author" placeholder="Author" required>
-            <input type="number" name="book_code" placeholder="Book Code" required>
+            <input type="text" name="book_code" placeholder="Book Code" required>
             <input type="number" name="copies_available" placeholder="Available Copies" required>
             <input type="number" name="total_copies" placeholder="Total Copies" required>
             <select name="category" required>
@@ -179,7 +224,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </optgroup>
             </select>
                 <div class="input_bookcover">
-                    <input type="file" name="book_cover" id="book_cover" accept="image/*" required>
+                    <label class="labels">Upload Cover Image</label>
+                    <input type="file" name="book_cover" id="book_cover" accept="image/*">
                     <label for="book_cover" class="file-label">
                         <span class="button-text">Upload Cover Image</span>
                         <span class="file-name"></span>
@@ -188,7 +234,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="input_bookpdf">
-                    <input type="file" name="book_pdf" id="book_pdf" accept="application/pdf" required>
+                    <label class="labels">Upload PDF</label>
+
+                    <input type="file" name="book_pdf" id="book_pdf" accept="application/pdf">
                     <label for="book_pdf" class="file-label">
                         <span class="button-text">Upload PDF</span>
                         <span class="file-name"></span>
@@ -206,12 +254,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <input type="hidden" name="book_id" id="editBookId">
     <input type="hidden" name="current_image_url" id="currentImageUrl">
     <input type="hidden" name="current_pdf_url" id="currentPdfUrl">
+    <label class="labels">Book Title</label>
+
     <input type="text" name="title" id="editTitle" placeholder="Book Title" required>
+    <label class="labels">Author</label>
     <input type="text" name="author" id="editAuthor" placeholder="Author" required>
+    <label class="labels">Book Code</label>
     <input type="text" name="book_code" id="editbook_code" placeholder="Book Code" required>
+    <label class="labels">Available Copies</label>
     <input type="number" name="copies_available" id="editCopiesAvailable" placeholder="Available Copies" required>
+    <label class="labels">Total Copies</label>
     <input type="number" name="total_copies" id="editTotalCopies" placeholder="Total Copies" required>
+    <label class="labels">Edit Category</label>
     <select name="category" id="editCategory" required>
+    
     <option value="" disabled selected>Select Category</option>
     <optgroup label="CAHS">
         <option value="Medicine">Medicine</option>
@@ -253,32 +309,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     
 <div class="input_bookcover">
+    <label class="labels">Edit Cover Image</label>
     <input type="file" name="book_cover" id="editBookCover" accept="image/*">
     <label for="editBookCover" class="file-label">
-        <span class="button-text">Upload Cover Image</span>
+        <span class="button-text">Edit Cover Image</span>
         <span class="file-name"></span>
         <i class='bx bx-image'></i>
     </label>
 </div>
 
 <div class="input_bookpdf">
+    <label class="labels">Edit PDF</label>
     <input type="file" name="book_pdf" id="editBookPdf" accept="application/pdf">
     <label for="editBookPdf" class="file-label">
-        <span class="button-text">Upload PDF</span>
+        <span class="button-text">Edit PDF</span>
         <span class="file-name"></span>
         <i class='bx bx-file'></i>
     </label>
 </div>
-
-                <div>
-        <label>Current Book Cover:</label>
-        <img id="currentBookCover" src="" alt="Current Book Cover" style="max-width: 100px;">
-    </div>
-
-    <div>
-        <label>Current Book PDF:</label>
-        <a id="currentBookPdf" href="" target="_blank">View Current PDF</a>
-    </div>
     <button type="submit" name="update_book" class="update-btn">Update</button>
     <button type="button" id="closeEditFormButton" onclick="closeEditForm()">Cancel</button>
 </form>
@@ -362,10 +410,10 @@ function editBook(bookId) {
             // Set the current image and PDF URLs
             document.getElementById('currentImageUrl').value = data.image_url;
             document.getElementById('currentPdfUrl').value = data.pdf_url;
-            document.getElementById('currentBookCover').src = data.image_url;
-            document.getElementById('currentBookPdf').href = data.pdf_url;
+
 
             document.getElementById('editBookContainer').classList.add('active');
+            addBookForm.classList.remove('active');
             document.querySelector('.container').classList.add('shifted');
             document.querySelector('.header-actions').classList.add('shifted');
             
@@ -405,6 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
     openFormButton.addEventListener('click', function() {
         addBookForm.classList.add('active');
         container.classList.add('shifted');
+        editBookContainer.classList.remove('active');
         headerActions.classList.add('shifted');
     });
 
@@ -424,14 +473,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     document.addEventListener('click', function(event) {
-        if (!addBookForm.contains(event.target) && !openFormButton.contains(event.target)) {
+        if (addBookForm.contains(event.target)) {
             addBookForm.classList.remove('active');
-            container.classList.remove('shifted');
             headerActions.classList.remove('shifted');
         }
-        if (!editBookContainer.contains(event.target) && !event.target.classList.contains('edit-btn')) {
+        if (event.target.classList.contains('edit-btn')) {
             editBookContainer.classList.remove('active');
-            container_id.classList.remove('shifted');
             headerActions.classList.remove('shifted');
         }
     });

@@ -255,35 +255,6 @@ body.dark .table-container5,.table-container,.table-container1,.table-container3
 }
 
 
-.dashboard-box {
-    color: white;
-    opacity: 0.9;
-    top: 35px;
-    background: var(--primary-color);
-    margin: 0.0625rem; /* 1px */
-    padding: 0.625rem; /* 10px */
-    border-radius: 0.625rem; /* 10px */
-    box-shadow: 0rem 0.25rem 0.625rem rgba(0, 0, 0, 0.1); /* 0px 4px 10px */
-    width: 50%; /* Adjust width for two boxes side by side */
-    height: 25rem; /* Adjust width for two boxes side by side */
-    position: relative;
-}
-
-.dashboard-long-box {
-    text-align: left;
-    color: white;
-    opacity: 0.9;
-    top: 35px;
-    position: relative;
-    margin-top: 10px;
-    margin-bottom: 1.25rem;
-    background: var(--primary-color);
-    padding: 1.25rem;
-    border-radius: 0.625rem;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%; /* Full width for the long box */
-    height: 25rem;
-}
 
 
 body.dark .dashboard-box, .dashboard-long-box {
@@ -298,6 +269,12 @@ body.dark .header-right {
 }
 
 body.dark .department-box {
+    background: var(--body-color);
+}
+body.dark .stats-item {
+    background: var(--body-color);
+}
+body.dark .attendance-labels {
     background: var(--body-color);
 }
 
@@ -446,7 +423,7 @@ th:active .sort-icon {
 .notification-btn .badge{
     position: absolute;
     top: 0px;
-    right: 340px;
+    right: 365px;
     background: red;
     color: white;
     font-size: 12px;

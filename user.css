@@ -137,23 +137,22 @@
 }
 
 
-
-
-
 .floating-table-container {
     display: none;
     position: absolute;
-    top: 12.5%;
+    top: 7.9%;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 94.5%;
-    max-height: 94.5%;
+    width: 97%;
+    max-height: 89.5%;
+    height: 100%;
     overflow-y: auto;
     background: var(--body-color);
     border: 1px solid #ccc;
     z-index: 1000;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 0px 200px rgba(10, 10, 10, 10); /* Black shadow */
 }
 .floating-table-container.active {
     display: block;
@@ -196,4 +195,33 @@ h3{
     border: none;
     cursor: pointer;
     box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+}
+
+#floatingTableButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Creates space between buttons */
+}
+
+.button-group button {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-group button:hover {
+    background-color: #45a049;
 }

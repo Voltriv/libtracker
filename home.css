@@ -25,7 +25,105 @@
     margin-bottom: 12.5rem; /* 200px */
 }
 
+.analytics {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.library-analytics {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    text-align: left;
+    color: white;
+    opacity: 0.9;
+    top: 35px;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 1.25rem;
+    background: var(--primary-color);
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 25%;
+    height: 25rem;
 
+}
+
+.library-analytics h2 {
+    text-align: left;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+}
+
+.stats-item {
+    background-color: #0f172a;
+    padding: 10px;
+    border-radius: 12px;
+    text-align: center;
+    background-color: #83b48a;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0.9;
+    height: 98px;
+
+}
+
+.stats-item h3 {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+.stats-item p {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+
+
+.dashboard-box {
+    color: white;
+    opacity: 0.9;
+    top: 35px;
+    background: var(--primary-color);
+    margin: 0.0625rem; /* 1px */
+    padding: 0.625rem; /* 10px */
+    border-radius: 0.625rem; /* 10px */
+    box-shadow: 0rem 0.25rem 0.625rem rgba(0, 0, 0, 0.1); /* 0px 4px 10px */
+    width: 50%; /* Adjust width for two boxes side by side */
+    height: 25rem; /* Adjust width for two boxes side by side */
+    position: relative;
+}
+
+.dashboard-long-box {
+    text-align: left;
+    color: white;
+    opacity: 0.9;
+    top: 35px;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 1.25rem;
+    background: var(--primary-color);
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 75%; /* Full width for the long box */
+    height: 25rem;
+}
 
 
 .department-boxes {
@@ -76,47 +174,72 @@
 
 
 
+/* Main Attendance Container */
 .attendance-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 20px;
-    border-radius: 12px;
-    gap: 30px; /* Creates spacing between label and chart */
+    border-radius: 15px;
+    gap: 30px;
+    height: 344px;
 }
 
+/* Department Labels Section */
 .attendance-labels {
     flex: 1;
-    padding: 10px 20px;
+    padding: 15px 25px;
     font-size: 16px;
     font-weight: 600;
-    color: #333;
-    border-radius: 10px;
-    text-align: left;
-    min-width: 150px;
-}
-
-.attendance-labels div {
-    padding: 8px 0;
-    border-bottom: 1px;
     color: white;
+    border-radius: 15px;
+    background-color: #83b48a;
+    min-width: 180px;
+    transition: all 0.3s ease;
+    height: 300px;
 }
 
+/* Individual Label Styling */
+.attendance-labels div {
+    padding: 6px  0;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    letter-spacing: 5px;
+}
+
+
+/* Chart Container */
 .attendance-chart {
     flex: 2;
-    max-width: 400px;
-    padding: 20px;
-    border-radius: 10px;
-    
+    width: 300px;
+    height: 300x;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* Canvas for the Chart */
 canvas {
     max-width: 100%;
     height: auto;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .attendance-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .attendance-chart {
+        width: 200px;
+        height: 200px;
+    }
+}
+
 
 /* Responsive: Stack labels and chart on smaller screens */
 @media (max-width: 768px) {

@@ -46,6 +46,8 @@
                     <th data-column1="last_name" data-order="asc">Last Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column1="first_name" data-order="asc">First Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column1="borrowed_date" data-order="asc">Borrowed Date<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column1="due_date" data-order="asc">due_date<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column1="return_date" data-order="asc">return_date<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column1="status" data-order="asc">Status<i class='bx bx-sort sort-icon'></i></th>
                     <th>Actions</th>
                 </tr>
@@ -53,7 +55,7 @@
             <tbody id="borrowedBookTableBody">
                 <?php
                 $query = "SELECT borrow.transaction_id, borrow.title, user.student_id, user.last_name, user.first_name, 
-                                 borrow.borrowed_date, borrow.status
+                                 borrow.borrowed_date, borrow.due_date, borrow.return_date, borrow.status
                           FROM borrow
                           INNER JOIN user ON borrow.student_id = user.student_id
                           ORDER BY borrow.borrowed_date DESC";
@@ -70,6 +72,8 @@
                                 <td>{$row['last_name']}</td>
                                 <td>{$row['first_name']}</td>
                                 <td>{$row['borrowed_date']}</td>
+                                <td>{$row['due_date']}</td>
+                                <td>{$row['return_date']}</td>
                                 <td>{$row['status']}</td>
                                 <td>
                                 <div class='actions_button'>
@@ -131,7 +135,9 @@ document.addEventListener('DOMContentLoaded', function() {
             'last_name': 3,
             'first_name': 4,
             'borrowed_date': 5,
-            'status': 6
+            'due_date': 6,
+            'return_date': 7,
+            'status': 8
         };
         return columnOrder[column];
     }
@@ -200,9 +206,10 @@ function filterTable() {
         const last_name = row.cells[3].textContent.toLowerCase();
         const first_name = row.cells[4].textContent.toLowerCase();
         const borrowed_date = row.cells[5].textContent.toLowerCase();
-        const status_text = row.cells[6].textContent.toLowerCase();
-
-        const matchesSearch = transaction_id.includes(filter) || title.includes(filter) || student_id.includes(filter) || last_name.includes(filter) || first_name.includes(filter) || borrowed_date.includes(filter);
+        const due_date = row.cells[6].textContent.toLowerCase();
+        const return_date = row.cells[7].textContent.toLowerCase();
+        const status_text = row.cells[8].textContent.toLowerCase();
+        const matchesSearch = transaction_id.includes(filter) || title.includes(filter) || student_id.includes(filter) || last_name.includes(filter) || first_name.includes(filter) || borrowed_date.includes(filter)|| due_date_date.includes(filter)|| return_date.includes(filter);
         const matchesStatus = status === "" || status_text === status;
 
         if (matchesSearch && matchesStatus) {
@@ -242,6 +249,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${row.last_name}</td>
                 <td>${row.first_name}</td>
                 <td>${row.borrowed_date}</td>
+                <td>${row.due_date}</td>
+
+                <td>${row.return_date}</td>
+
                 <td>${row.status}</td>
                 <td>
                     <div class='actions_button'>

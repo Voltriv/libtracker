@@ -19,6 +19,15 @@
     margin-top: 30px;
 }
 
+.table-container table td:nth-child(5),
+.table-container table th:nth-child(6) {
+    min-width: 50px; /* Increase this value as needed */
+    max-width: 88px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .addbookform-container.active, .edit-book-container.active {
     right: 0; /* Slide in from the right */
 }
@@ -32,7 +41,7 @@
 .addbookform-container button {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -88,7 +97,7 @@
 .edit-book-container form input,
 .edit-book-container form select,
 .edit-book-container form button {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -125,17 +134,19 @@
     transition: transform 0.5s, top 0.5s, left 0.5s, width 0.5s, height 0.5s;
     position: relative;
 }
-.book-cover.active{
+.book-cover.active {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1); /* Adjust scale as you like */
+    transform: translate(-50%, -50%) scale(1.4); /* Adjust scale as you like */
     z-index: 10001;
     width: auto; /* Optional: control size */
     height: auto; /* Optional */
     opacity: 1;
-
+    box-shadow: 0 0px 500px rgba(0, 0, 0, 300); /* Soft shadow */
+    border-radius: 12px; /* Optional: rounded corners */
 }
+
 
 /* Base styles for both inputs */
 .input_bookcover,
@@ -156,7 +167,14 @@
   height: 100%;
   cursor: pointer;
 }
-
+.labels{
+    font-size: 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  color: white;
+  position: relative;
+}
 /* Custom label styling */
 .input_bookcover .file-label,
 .input_bookpdf .file-label {
@@ -168,9 +186,15 @@
   color: white;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
   
 }
+.input_bookcover input,
+.input_bookpdf input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
 
 /* Icon styling */
 .input_bookcover .file-label i,

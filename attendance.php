@@ -261,8 +261,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const last_name = row.cells[2].textContent.toLowerCase();
             const row_department = row.cells[3].textContent.toLowerCase();
             const year_level = row.cells[4].textContent.toLowerCase();
+            const entry_time = row.cells[5].textContent.toLowerCase();
 
-            const matchesSearch = student_id.includes(filter) || first_name.includes(filter) || last_name.includes(filter) || year_level.includes(filter);
+
+            const matchesSearch = student_id.includes(filter) || first_name.includes(filter) || last_name.includes(filter) || year_level.includes(filter) || entry_time.includes(filter);
             const matchesDepartment = department === "" || row_department === department;
 
             if (matchesSearch && matchesDepartment) {

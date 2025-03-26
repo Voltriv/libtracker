@@ -6,13 +6,15 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_id = $_POST['user_id'];
     $first_name = ucwords(strtolower(trim($_POST['first_name'])));
-    $last_name = ucwords(strtolower(trim($_POST['last_name'])));
+    $last_name = ucwords(strtolower(trim(string: $_POST['last_name'])));
+    $program = $_POST['program'];
+
     $department = $_POST['department'];
     $year_level = $_POST['year_level'];
     $phinmaed_email = $_POST['phinmaed_email'];
     $contact_number = $_POST['contact_number'];
 
-    $query = "UPDATE user SET first_name = '$first_name', last_name = '$last_name', department = '$department', year_level = '$year_level', phinmaed_email = '$phinmaed_email', contact_number = '$contact_number' WHERE user_id = $user_id";
+    $query = "UPDATE user SET first_name = '$first_name', last_name = '$last_name',program = '$program', department = '$department', year_level = '$year_level', phinmaed_email = '$phinmaed_email', contact_number = '$contact_number' WHERE user_id = $user_id";
 
     if ($conn->query($query) === TRUE) {
         echo json_encode(['success' => true]);

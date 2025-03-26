@@ -106,8 +106,16 @@ include 'db_config.php';
     <!-- Floating Table Container -->
     <div id="floatingTableContainer" class="floating-table-container">
         <span class="close-floating-table" onclick="closeFloatingTable()">×</span>
+        <div id="floatingTableButtons">
         <h2>User Details</h2>
-        <div id="floatingTableContent"></div>
+        <div class="button-group">
+        <button onclick="showAttendance()">Attendance</button>
+        <button onclick="showBorrowedBooks()">Borrowed Books</button>
+        </div>
+        </div>
+
+        <div id="floatingTableContent">
+        </div> 
     </div>
 
     <!-- Edit User Sliding Form -->
@@ -118,15 +126,28 @@ include 'db_config.php';
             <input type="text" name="first_name" placeholder="First Name" id="editFirstName" required>
             <input type="text" name="last_name" placeholder="Last Name" id="editLastName" required>
             <select name="program" id="editProgram" required>
-                <option value="CITE">CITE</option>
-                <option value="CAHS">CAHS</option>
-                <option value="CCJE">CCJE</option>
-                <option value="CEA">CEA</option>
-                <option value="CELA">CELA</option>
-                <option value="CMA">CMA</option>
-                <option value="COL">COL</option>
-                <option value="SHS">SHS</option>
+                <option value="Associate in Computer Technology">Associate in Computer Technology</option>
+                <option value="BA Political Science">BA Political Science</option>
+                <option value="BS Accountancy">BS Accountancy</option>
+                <option value="BS Accounting Information System">BS Accounting Information System</option>
+                <option value="BS Architecture">BS Architecture</option>
+                <option value="BS Business Admin Financial Management">BS Business Admin Financial Management</option>
+                <option value="BS Business Admin Marketing Management">BS Business Admin Marketing Management</option>
+                <option value="BS Civil Engineering">BS Civil Engineering</option>
+                <option value="BS Computer Engineering">BS Computer Engineering</option>
+                <option value="BS Criminology">BS Criminology</option>
+                <option value="BS Electrical Engineering">BS Electrical Engineering</option>
+                <option value="BS Hospitality Management">BS Hospitality Management</option>
+                <option value="BS Information Technology">BS Information Technology</option>
+                <option value="BS Management Accounting">BS Management Accounting</option>
+                <option value="BS Mechanical Engineering">BS Mechanical Engineering</option>
+                <option value="BS Medical Laboratory">BS Medical Laboratory</option>
+                <option value="BS Nursing">BS Nursing</option>
+                <option value="BS Pharmacy">BS Pharmacy</option>
+                <option value="BS Psychology">BS Psychology</option>
+                <option value="BS Tourism Management">BS Tourism Management</option>
             </select>
+
             <select name="department" id="editCategory" required>
                 <option value="CITE">CITE</option>
                 <option value="CAHS">CAHS</option>
@@ -174,6 +195,7 @@ document.getElementById('editUserForm').addEventListener('submit', function (eve
     .then(data => {
         if (data.success) {
             alert('User updated successfully!');
+            location.reload();
             closeEditForm();
 
             // Update UI dynamically
@@ -396,58 +418,90 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`get_user_details.php?user_id=${userId}`)
             .then(response => response.json())
             .then(data => {
-                let content = `
-                    <table class="userdetail" style="width: 100%; border-collapse: collapse;">
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Student ID</th>
-                            <td style="padding: 8px;">${data.user.student_id}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Name</th>
-                            <td style="padding: 8px;">${data.user.first_name} ${data.user.last_name}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Proram</th>
-                            <td style="padding: 8px;">${data.user.program}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Department</th>
-                            <td style="padding: 8px;">${data.user.department}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Year Level</th>
-                            <td style="padding: 8px;">${data.user.year_level}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Email</th>
-                            <td style="padding: 8px;">${data.user.phinmaed_email}</td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: left; padding: 8px;">Contact Number</th>
-                            <td style="padding: 8px;">${data.user.contact_number}</td>
-                        </tr>
-                    </table>
-                    `;
-
-
-                content += '<h3>Attendance</h3>';
-                content += '<table><thead><tr><th>Date</th><th>Entry Time</th></tr></thead><tbody>';
-                data.attendance.forEach(att => {
-                    content += `<tr><td>${att.date}</td><td>${att.entry_time}</td></tr>`;
-                });
-                content += '</tbody></table>';
-
-                content += '<h3>Borrowed Books</h3>';
-                content += '<table><thead><tr><th>Book Title</th><th>Borrowed Date</th><th>Return Date</th><th>Status</th></tr></thead><tbody>';
-                data.borrow.forEach(book => {
-                    content += `<tr><td>${book.title}</td><td>${book.borrowed_date}</td><td>${book.return_date}</td><td>${book.status}</td></tr>`;
-                });
-                content += '</tbody></table>';
-
-                document.getElementById('floatingTableContent').innerHTML = content;
                 document.getElementById('floatingTableContainer').classList.add('active');
+                document.getElementById('floatingTableContainer').dataset.userId = userId;
+                document.getElementById('floatingTableContainer').dataset.userData = JSON.stringify(data);
+                showAttendance(); // Default to showing attendance
             });
     }
+
+    function showAttendance() {
+    const container = document.getElementById('floatingTableContainer');
+    const data = JSON.parse(container.dataset.userData);
+    let content = `
+        <table class="userdetail" style="width: 100%; border-collapse: collapse;">
+            <tr><th>Student ID</th><td>${data.user.student_id}</td></tr>
+            <tr><th>Name</th><td>${data.user.first_name} ${data.user.last_name}</td></tr>
+            <tr><th>Program</th><td>${data.user.program}</td></tr>
+            <tr><th>Department</th><td>${data.user.department}</td></tr>
+            <tr><th>Year Level</th><td>${data.user.year_level}</td></tr>
+            <tr><th>Email</th><td>${data.user.phinmaed_email}</td></tr>
+            <tr><th>Contact Number</th><td>${data.user.contact_number}</td></tr>
+        </table>
+        <h3>Attendance</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Day</th>
+                </tr>
+            </thead>
+            <tbody>`;
+        
+        if (Array.isArray(data.attendance) && data.attendance.length > 0) {
+        data.attendance.forEach(attendance => {
+            console.log("Attendance Record:", attendance);
+            content += `<tr>
+                <td>${attendance.date_th || 'N/A'}</td>
+                <td>${attendance.time_th || 'N/A'}</td>
+                <td>${attendance.day || 'N/A'}</td>
+            </tr>`;
+        });
+    } else {
+        content += `<tr><td colspan="3">No attendance records found.</td></tr>`;
+    }
+
+    content += '</tbody></table>';
+    document.getElementById('floatingTableContent').innerHTML = content;
+}
+
+
+    function showBorrowedBooks() {
+    const container = document.getElementById('floatingTableContainer');
+    const data = JSON.parse(container.dataset.userData);
+    let content = `
+        <table class="userdetail" style="width: 100%; border-collapse: collapse;">
+            <tr><th>Student ID</th><td>${data.user.student_id}</td></tr>
+            <tr><th>Name</th><td>${data.user.first_name} ${data.user.last_name}</td></tr>
+            <tr><th>Program</th><td>${data.user.program}</td></tr>
+            <tr><th>Department</th><td>${data.user.department}</td></tr>
+            <tr><th>Year Level</th><td>${data.user.year_level}</td></tr>
+            <tr><th>Email</th><td>${data.user.phinmaed_email}</td></tr>
+            <tr><th>Contact Number</th><td>${data.user.contact_number}</td></tr>
+        </table>
+        <h3>Borrowed Books</h3>
+        <table>
+            <thead><tr><th>Book Title</th><th>Borrowed Date</th><th>Return Date</th><th>Status</th></tr></thead>
+            <tbody>`;
+
+    if (Array.isArray(data.borrow) && data.borrow.length > 0) {
+        data.borrow.forEach(book => {
+            content += `
+                <tr>
+                    <td>${book.title || 'N/A'}</td>
+                    <td>${book.borrowed_date || 'N/A'}</td>
+                    <td>${book.return_date || 'N/A'}</td>
+                    <td>${book.status || 'N/A'}</td>
+                </tr>`;
+        });
+    } else {
+        content += `<tr><td colspan="4">No borrowed books found.</td></tr>`;
+    }
+    content += '</tbody></table>';
+    document.getElementById('floatingTableContent').innerHTML = content;
+}
+
 
     function closeFloatingTable() {
         document.getElementById('floatingTableContainer').classList.remove('active');

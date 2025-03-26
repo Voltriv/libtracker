@@ -5,7 +5,8 @@ date_default_timezone_set('Asia/Manila');
 $user_id = $_GET['user_id'];
 
 // Fetch user details
-$user_query = "SELECT student_id, first_name, last_name, department, year_level, phinmaed_email, contact_number FROM user WHERE user_id = ?";
+// Fetch user details
+$user_query = "SELECT student_id, first_name, last_name, program, department, year_level, phinmaed_email, contact_number FROM user WHERE user_id = ?";
 $stmt_user = $conn->prepare($user_query);
 $stmt_user->bind_param("i", $user_id);
 $stmt_user->execute();
@@ -27,7 +28,13 @@ if ($user_result->num_rows > 0) {
 }
 
 // Fetch attendance data
-$attendance_query = "SELECT DATE(entry_time) as date, TIME(entry_time) as entry_time FROM attendance WHERE student_id = ?";
+// Fetch attendance data
+$attendance_query = "SELECT 
+                         DATE_FORMAT(STR_TO_DATE(entry_time, '%M %d, %Y, %l:%i %p'), '%M %d, %Y') AS date_th,
+                         DATE_FORMAT(STR_TO_DATE(entry_time, '%M %d, %Y, %l:%i %p'), '%l:%i %p') AS time_th,
+                         day 
+                     FROM attendance 
+                     WHERE student_id = ?";
 $stmt_attendance = $conn->prepare($attendance_query);
 $stmt_attendance->bind_param("s", $user_data['student_id']);
 $stmt_attendance->execute();
@@ -39,11 +46,17 @@ if ($attendance_result->num_rows > 0) {
     }
 }
 
+
+
+
+
 // Fetch borrowed books data
-$borrow_query = "SELECT books.title, borrow.borrowed_date, borrow.status 
+// Fetch borrowed books data
+$borrow_query = "SELECT books.title, borrow.borrowed_date, borrow.return_date, borrow.status 
                  FROM borrow 
                  INNER JOIN books ON borrow.book_code = books.book_code
                  WHERE borrow.student_id = ?";
+
 $stmt_borrow = $conn->prepare($borrow_query);
 $stmt_borrow->bind_param("s", $user_data['student_id']);
 $stmt_borrow->execute();
