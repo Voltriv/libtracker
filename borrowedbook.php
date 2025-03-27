@@ -96,7 +96,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const borrowedBook_tableHeaders = document.querySelectorAll('th[data-column1]');
     const borrowedBook_tableBody = document.getElementById('borrowedBookTableBody');
+    const searchInput = document.getElementById('search3');
+    const statusFilter = document.getElementById('statusFilter');
 
+    let currentSortColumn = 'borrowed_date'; // Default sort column
+    let currentSortOrder = 'desc'; // Default sort order
+
+    // Sorting Function
     borrowedBook_tableHeaders.forEach(header => {
         header.addEventListener('click', function() {
             const column = header.getAttribute('data-column1');
@@ -104,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             order = order === 'asc' ? 'desc' : 'asc';
             header.setAttribute('data-order', order);
+            currentSortColumn = column;
+            currentSortOrder = order;
 
             borrowedBook_sortTable(column, order);
         });
@@ -114,8 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const columnIndex = borrowedBook_getColumnIndex(column);
 
         rows.sort((a, b) => {
-            const cellA = a.cells[columnIndex].textContent.trim().toLowerCase();
-            const cellB = b.cells[columnIndex].textContent.trim().toLowerCase();
+            const cellA = a.cells[columnIndex]?.textContent.trim().toLowerCase() || '';
+            const cellB = b.cells[columnIndex]?.textContent.trim().toLowerCase() || '';
 
             if (order === 'asc') {
                 return cellA.localeCompare(cellB);
@@ -141,90 +149,39 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         return columnOrder[column];
     }
-});
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.return-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const transactionId = this.getAttribute('data-transaction-id');
-            updateStatus(transactionId, 'return');
+    // Filter Function
+    function filterTable() {
+        const filter = searchInput.value.toLowerCase();
+        const status = statusFilter.value.toLowerCase();
+        const rows = borrowedBook_tableBody.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+            const transaction_id = row.cells[0]?.textContent.toLowerCase() || '';
+            const title = row.cells[1]?.textContent.toLowerCase() || '';
+            const student_id = row.cells[2]?.textContent.toLowerCase() || '';
+            const last_name = row.cells[3]?.textContent.toLowerCase() || '';
+            const first_name = row.cells[4]?.textContent.toLowerCase() || '';
+            const borrowed_date = row.cells[5]?.textContent.toLowerCase() || '';
+            const due_date = row.cells[6]?.textContent.toLowerCase() || '';
+            const return_date = row.cells[7]?.textContent.toLowerCase() || '';
+            const status_text = row.cells[8]?.textContent.toLowerCase() || '';
+
+            const matchesSearch = transaction_id.includes(filter) || title.includes(filter) ||
+                student_id.includes(filter) || last_name.includes(filter) ||
+                first_name.includes(filter) || borrowed_date.includes(filter) ||
+                due_date.includes(filter) || return_date.includes(filter);
+
+            const matchesStatus = status === "" || status_text === status;
+
+            row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
         });
-    });
-
-    document.querySelectorAll('.set-returned-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const transactionId = this.getAttribute('data-transaction-id');
-            updateStatus(transactionId, 'set_returned');
-        });
-    });
-
-    
-});
-function updateStatus(transactionId, action) {
-    if (confirm(`Are you sure you want to mark as ${action} this transaction?`)) {
-        fetch('update_status.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ transaction_id: transactionId, action: action })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Response from server:", data); // Debugging line
-
-            if (data.success) {
-                const row = document.querySelector(`button[data-transaction-id='${transactionId}']`).closest('tr');
-                if (action === 'return' || action === 'set_returned') {
-                    row.cells[6].textContent = 'Returned';
-                    row.querySelectorAll('button').forEach(btn => btn.disabled = true);
-                }
-            } else {
-                alert('Error updating status: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
-    } else {
-        console.log('Action canceled by admin.');
     }
-}
 
+    searchInput.addEventListener('input', filterTable);
+    statusFilter.addEventListener('change', filterTable);
 
-function filterTable() {
-    const searchInput = document.getElementById('search3');
-    const statusFilter = document.getElementById('statusFilter');
-    const filter = searchInput.value.toLowerCase();
-    const status = statusFilter.value.toLowerCase();
-    const rows = document.getElementById('borrowedBookTableBody').getElementsByTagName('tr');
-
-    Array.from(rows).forEach(row => {
-        const transaction_id = row.cells[0].textContent.toLowerCase();
-        const title = row.cells[1].textContent.toLowerCase();
-        const student_id = row.cells[2].textContent.toLowerCase();
-        const last_name = row.cells[3].textContent.toLowerCase();
-        const first_name = row.cells[4].textContent.toLowerCase();
-        const borrowed_date = row.cells[5].textContent.toLowerCase();
-        const due_date = row.cells[6].textContent.toLowerCase();
-        const return_date = row.cells[7].textContent.toLowerCase();
-        const status_text = row.cells[8].textContent.toLowerCase();
-        const matchesSearch = transaction_id.includes(filter) || title.includes(filter) || student_id.includes(filter) || last_name.includes(filter) || first_name.includes(filter) || borrowed_date.includes(filter)|| due_date_date.includes(filter)|| return_date.includes(filter);
-        const matchesStatus = status === "" || status_text === status;
-
-        if (matchesSearch && matchesStatus) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-}
-
-document.getElementById('search3').addEventListener('input', filterTable);
-document.getElementById('statusFilter').addEventListener('change', filterTable);
-
-
-document.addEventListener('DOMContentLoaded', function () {
+    // Polling Function
     function fetchBorrowedBooks() {
         fetch('fetch_borrowed_books.php')
             .then(response => response.json())
@@ -235,12 +192,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateBorrowedBookTable(data) {
-        const tableBody = document.getElementById('borrowedBookTableBody');
-        tableBody.innerHTML = ''; // Clear existing rows
+        borrowedBook_tableBody.innerHTML = ''; // Clear existing rows
 
         data.forEach(row => {
-            const tr = document.createElement('tr');
             let disabled = row.status === 'Returned' ? 'disabled' : '';
+            const tr = document.createElement('tr');
 
             tr.innerHTML = `
                 <td>${row.transaction_id}</td>
@@ -259,26 +215,47 @@ document.addEventListener('DOMContentLoaded', function () {
                 </td>
             `;
 
-            tableBody.appendChild(tr);
+            borrowedBook_tableBody.appendChild(tr);
         });
 
         attachReturnButtonListeners();
+
+        // Reapply sorting and filtering after table update
+        borrowedBook_sortTable(currentSortColumn, currentSortOrder);
+        filterTable();
     }
 
     function attachReturnButtonListeners() {
         document.querySelectorAll('.return-btn').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 const transactionId = this.getAttribute('data-transaction-id');
                 updateStatus(transactionId, 'return');
             });
         });
     }
 
-    // Fetch borrowed books every 5 seconds (5000 milliseconds)
-    setInterval(fetchBorrowedBooks, 5000);
+    function updateStatus(transactionId, action) {
+        if (confirm(`Are you sure you want to mark this transaction as ${action}?`)) {
+            fetch('update_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ transaction_id: transactionId, action: action })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchBorrowedBooks(); // Refresh table on success
+                } else {
+                    alert('Error updating status: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Fetch error:', error));
+        }
+    }
 
-    // Initial fetch
+    // Initial fetch and periodic polling
     fetchBorrowedBooks();
+    setInterval(fetchBorrowedBooks, 5000);
 });
 
 

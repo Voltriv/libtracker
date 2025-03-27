@@ -18,8 +18,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 $studentId = $data['studentId'];
 $bookCode = $data['bookCode'];
 $bookTitle = $data['bookTitle'];
-$borrowDate = $data['borrowDate'];
-$dueDate = $data['dueDate'];
+$borrowDate = date("F j, Y h:i A", strtotime($data['borrowDate'])); // Format Date
+$dueDate = date("F j, Y h:i A", strtotime($data['dueDate']));       // Format Date
 $status = $data['status']; // "Borrowed", "Returned", etc.
 
 // Start transaction

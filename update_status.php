@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 $data = json_decode(file_get_contents("php://input"), true);
 $transaction_id = $data['transaction_id'] ?? null;
 $action = $data['action'] ?? null;
-$return_date = $data['return_date'] ?? date('Y-m-d H:i:s'); // Use current date if not provided
+$return_date = $data['return_date'] ?? date('F j, Y h:i A'); // Use current date if not provided
 
 if (!$transaction_id || !$action) {
     echo json_encode(["success" => false, "message" => "Missing parameters"]);

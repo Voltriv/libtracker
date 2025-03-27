@@ -65,16 +65,37 @@ $notifications = mysqli_fetch_all($result, MYSQLI_ASSOC);
                     if (notification.status === 'unread') {
                         li.classList.add('unread');
                     }
-                    li.innerHTML = `
-                        <strong>${notification.message || "No message"}</strong>
-                        <br><small>${notification.created_at || ""}</small>
+                    li.innerHTML = formatNotificationMessage(notification.message) + `
+                        <br><small>
+                            ${new Date(notification.created_at).toLocaleString('en-US', {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true
+                            }) || ""}
+                        </small>
                     `;
+
                     notificationList.appendChild(li);
                 });
             }
         })
         .catch(error => console.error("Error fetching notifications:", error));
 }
+function formatNotificationMessage(message) {
+    // Split the message at the word "borrowed"
+    const parts = message.split(" borrowed");
+    
+    if (parts.length >= 2) {
+        const name = parts[0].trim(); // Part before "borrowed"
+        const rest = "borrowed" + parts[1]; // "borrowed" and the rest
+        return `<strong>${name}</strong> ${rest}`; // Bold only the name part
+    }
+    return message; // If "borrowed" is not found, return original message
+}
+
 
 
 

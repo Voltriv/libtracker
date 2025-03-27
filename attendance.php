@@ -33,13 +33,13 @@
         <input type="text" id="search1" placeholder="Search...">
         <select id="departmentFilter" class="filter-attendance">
             <option value="">All Departments</option>
-            <option value="CITE">CITE</option>
-            <option value="CMA">CMA</option>
-            <option value="CEA">CEA</option>
-            <option value="CAS">CAS</option>
-            <option value="CELA">CELA</option>
-            <option value="CCJE">CCJE</option>
-            <option value="CAHS">CAHS</option>
+            <option value=" CITE"> CITE</option>
+            <option value=" CMA"> CMA</option>
+            <option value=" CEA"> CEA</option>
+            <option value=" CAS"> CAS</option>
+            <option value=" CELA"> CELA</option>
+            <option value=" CCJE"> CCJE</option>
+            <option value=" CAHS"> CAHS</option>
         </select>
     </div>
     

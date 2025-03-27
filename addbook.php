@@ -165,15 +165,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <button id="openFormButton" class="add-btn"><i class='bx bxs-book-add'></i>&nbsp; Add Book</button>
         <input type="text" id="search" placeholder="Search..." >
         <select id="bookmanagementFilter" class="filter-attendance">
-            <option value="">All categorys</option>
-            <option value="CITE">CITE</option>
-            <option value="CMA">CMA</option>
-            <option value="CEA">CEA</option>
-            <option value="CAS">CAS</option>
-            <option value="CELA">CELA</option>
-            <option value="CCJE">CCJE</option>
-            <option value="CAHS">CAHS</option>
-        </select>
+        <option value="">All Categories</option>
+
+<optgroup label="CAHS">
+    <option value="Medicine">Medicine</option>
+    <option value="Psychology">Psychology</option>
+    <option value="Anatomy">Anatomy</option>
+</optgroup>
+
+<optgroup label="CCJE">
+    <option value="Crime">Crime</option>
+    <option value="Law">Law</option>
+    <option value="Murder">Murder</option>
+</optgroup>
+
+<optgroup label="CEA">
+    <option value="Architecture">Architecture</option>
+    <option value="Physics">Physics</option>
+    <option value="Engineering">Engineering</option>
+</optgroup>
+
+<optgroup label="CELA">
+    <option value="Politics">Politics</option>
+    <option value="Dictionary">Dictionary</option>
+    <option value="Education">Education</option>
+</optgroup>
+
+<optgroup label="CITE">
+    <option value="Technology">Technology</option>
+    <option value="Databases">Databases</option>
+    <option value="Internet">Internet</option>
+</optgroup>
+
+<optgroup label="CMA">
+    <option value="Entrepreneurship">Entrepreneurship</option>
+    <option value="Business">Business</option>
+    <option value="Management">Management</option>
+</optgroup>
+
+<optgroup label="ETC">
+    <option value="Action">Action</option>
+    <option value="Fiction">Fiction</option>
+    <option value="Biographies">Biographies</option>
+</optgroup>
+</select>
     </div>
     
 
@@ -383,6 +418,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <script>
 
+    document.addEventListener('DOMContentLoaded', function() {
+    const bookTableBody = document.getElementById('bookTableBody');
+    const categoryFilter = document.getElementById('bookmanagementFilter');
+    
+    // Category Filtering
+    categoryFilter.addEventListener('change', function() {
+        const selectedCategory = this.value.toLowerCase();
+        const rows = bookTableBody.getElementsByTagName('tr');
+        
+        Array.from(rows).forEach(row => {
+            const category = row.cells[6].textContent.toLowerCase(); 
+            if (selectedCategory === "" || category.includes(selectedCategory)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+
+
 document.querySelectorAll('.input_bookcover input, .input_bookpdf input').forEach(input => {
   input.addEventListener('change', function(e) {
     const fileName = this.files[0] ? this.files[0].name : '';
@@ -473,10 +529,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     document.addEventListener('click', function(event) {
-        if (addBookForm.contains(event.target)) {
-            addBookForm.classList.remove('active');
-            headerActions.classList.remove('shifted');
-        }
+        
         if (event.target.classList.contains('edit-btn')) {
             editBookContainer.classList.remove('active');
             headerActions.classList.remove('shifted');
