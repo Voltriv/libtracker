@@ -33,6 +33,14 @@ $result = $conn->query($query);
 while ($row = $result->fetch_assoc()) {
     $recentBorrowedBooks[] = $row;
 }
+// Fetch most borrowed books from 'borrow' table
+$mostBorrowedBooks = $conn->query("
+    SELECT title, book_code, COUNT(book_code) AS borrow_count
+    FROM borrow
+    GROUP BY book_code
+    ORDER BY borrow_count DESC
+    LIMIT 5
+");
 
 // Fetch total book inventory
 $query = "SELECT COUNT(*) as total_books FROM books";
@@ -228,30 +236,34 @@ $deactivatedUsers = $row['deactivated_users'] ?? 0;
             </div>
         </div>
         <div class="dashboard-box">
-            <h2>BORROWED BOOK</h2>
-            <div class="borrowed-books-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Borrowed By</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($recentBorrowedBooks as $book) {
-                            echo "<tr>
-                                    <td>{$book['title']}</td>
-                                    <td>{$book['first_name']} {$book['last_name']}</td>
-                                    <td>{$book['borrowed_date']}</td>
-                                  </tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <h2>MOST BORROWED BOOKS</h2>
+    <div class="borrowed-books-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Book Code</th>
+                    <th>Times Borrowed</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($mostBorrowedBooks->num_rows > 0) {
+                    while ($book = $mostBorrowedBooks->fetch_assoc()) {
+                        echo "<tr>
+                                <td>{$book['title']}</td>
+                                <td>{$book['book_code']}</td>
+                                <td>{$book['borrow_count']}</td>
+                              </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>No borrowed books found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

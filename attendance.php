@@ -29,7 +29,7 @@
 </nav>
 <div class="container2">
     <div class="search-sort">
-    <button id="startScanner" class="add-btn">Start Scanner</button>
+    <button id="startScanner" class="add-btn"><i class='bx bx-scan'></i>&nbsp;Start Scanner</button>
         <input type="text" id="search1" placeholder="Search...">
         <select id="departmentFilter" class="filter-attendance">
             <option value="">All Departments</option>
@@ -242,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
             errorSound.play().catch(error => {
                     console.error('Error playing sound:', error);
                 });
-            alert('Error marking attendance: ' + data.message);
         }
     })
     .catch(error => {

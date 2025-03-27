@@ -162,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container" id="container5">
     <div class="search-sort">
-        <button id="openFormButton" class="add-btn"><i class='bx bxs-book-add'></i>&nbsp; ADD BOOK</button>
+        <button id="openFormButton" class="add-btn"><i class='bx bxs-book-add'></i>&nbsp; Add Book</button>
         <input type="text" id="search" placeholder="Search..." >
         <select id="bookmanagementFilter" class="filter-attendance">
             <option value="">All categorys</option>

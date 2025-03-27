@@ -31,7 +31,7 @@ include 'db_config.php';
 <div class="container5">
     <div class="search-sort">
 
-        <button id="openStaffFormButton" class="add-btn"><i class='bx bxs-user-plus '></i>&nbsp; ADD STAFF</button>
+        <button id="openStaffFormButton" class="add-btn"><i class='bx bxs-user-plus '></i>&nbsp; Add Staff</button>
 
         <input type="text" id="search4" placeholder="Search...">
         <select id="positionFilter" class="filter-attendance">
@@ -436,16 +436,7 @@ document.getElementById('editStaffForm').addEventListener('submit', function(e) 
 // Close button for edit form
 document.getElementById('closeEditStaffFormButton').addEventListener('click', closeEditFormStaff);
 
-// Click outside handling for edit form
-document.addEventListener('click', function(event) {
-    const editStaffContainer = document.getElementById('editStaffContainer');
-    if (editStaffContainer && editStaffContainer.classList.contains('active') && 
-        !editStaffContainer.contains(event.target) && 
-        !event.target.classList.contains('edit-btn') && 
-        !event.target.closest('.edit-btn')) {
-        closeEditFormStaff();
-    }
-});
+
 
 function filterTable() {
     const searchInput = document.getElementById('search4');

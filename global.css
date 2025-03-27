@@ -274,10 +274,17 @@ body.dark .department-box {
 body.dark .stats-item {
     background: var(--body-color);
 }
-body.dark .attendance-labels {
+body.dark #floatingTableButtons {
+    background: var(--primary-color);
+}
+body.dark .borrowed-books-container {
     background: var(--body-color);
 }
 
+
+body.dark .attendance-labels {
+    background: var(--body-color);
+}
 /* Media Queries */
 @media (max-width: 768px) {
     .search-sort h1 {

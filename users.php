@@ -70,6 +70,7 @@ include 'db_config.php';
                         $toggleClass = $row['status'] == 1 ? 'deactivate-btn' : 'activate-btn';
                         $toggleIcon = $row['status'] == 1 ? 'bx-user-x' : 'bx-user-check';
                         $statusClass = $row['status'] == 1 ? 'status-active' : 'status-deactivated';
+                        $contactNumber = "0" . ltrim($row['contact_number'], "0");
                         echo "<tr>
                                 <td>{$row['student_id']}</td>
                                 <td>{$row['first_name']}</td>
@@ -78,7 +79,7 @@ include 'db_config.php';
                                 <td>{$row['department']}</td>
                                 <td>{$row['year_level']}</td>
                                 <td>{$row['phinmaed_email']}</td>
-                                <td>{$row['contact_number']}</td>
+                                <td>{$contactNumber}</td>
                                 <td class='{$statusClass}'>{$status}</td>
                                 <td>
                                     <form method='POST' class='toggle-status-form'>

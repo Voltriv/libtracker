@@ -83,14 +83,35 @@
 }
 
 .stats-item h3 {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-size: 1rem;
     color: #ffffff;
 }
 
 .stats-item p {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
+}
+
+.borrowed-books-container {
+    color: black; /* If using CSS variables */
+    /* Or just use standard black */
+    /* color: #000; */
+    background-color: #83b48a; /* Light background for contrast */
+    border-radius: 8px; /* 50px is a bit extreme for tables */
+    padding: 20px;
+    opacity: 0.9;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 325px;
+}
+.borrowed-books-container td{
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+.borrowed-books-container tr{
+    border-radius: 10px;
 }
 
 
@@ -98,7 +119,7 @@
 .dashboard-box {
     color: white;
     opacity: 0.9;
-    top: 35px;
+    top: 20px;
     background: var(--primary-color);
     margin: 0.0625rem; /* 1px */
     padding: 0.625rem; /* 10px */
@@ -162,8 +183,9 @@
 }
 
 .user-count {
-    font-size: 30px;
+    font-size: 45px;
     font-weight: bold;
+    
 }
 .department-label {
     font-size:24px;
@@ -179,7 +201,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    padding: 20px;
+    padding: 10px;
     border-radius: 15px;
     gap: 30px;
     height: 344px;

@@ -258,12 +258,13 @@ body.dark .switch::before{
     left: 250px;
     height: 100vh;
     width: calc(100% - 250px);
-    background: url(logo_lib.png) no-repeat center center var(--body-color);
-    background-size: 1000px auto;
+    background: url(logo_lib_home.png) no-repeat center center var(--body-color);
+    background-size: 40% auto;
     transition: var(--tran-05);
     padding: 15px;
     
 }
+
 .sidebar.close ~ .home-addbook{
     left: 88px;
     width: calc(100% - 88px);

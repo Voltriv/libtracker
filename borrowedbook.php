@@ -250,9 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <td>${row.first_name}</td>
                 <td>${row.borrowed_date}</td>
                 <td>${row.due_date}</td>
-
                 <td>${row.return_date}</td>
-
                 <td>${row.status}</td>
                 <td>
                     <div class='actions_button'>

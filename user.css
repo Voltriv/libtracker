@@ -1,7 +1,5 @@
 
-.container4.shifted {
-    margin-right: 300px; /* Adjust margin to match scanner width */
-}
+
 
 .table-container1 {
     width: 100%;
@@ -12,18 +10,34 @@
     margin-top: 8px;
     
 }
-.table-container1 table td:nth-child(7),
-.table-container1 table th:nth-child(7) {
-    min-width: 250px; /* Increase this value as needed */
-    max-width: 350px;
-    white-space: nowrap;
+.table-container1 table td:nth-child(7) {
+    min-width: 100px; /* Increase this value as needed */
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-container1 table td:nth-child(5) {
+    min-width: 50px; /* Increase this value as needed */
+    max-width: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.table-container1 table td:nth-child(2),
+.table-container1 table td:nth-child(3),
+
+.table-container1 table td:nth-child(4) ,
+.table-container1 table td:nth-child(6){
+    min-width: 50px; /* Increase this value as needed */
+    max-width: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 
-
-
+.container4.shifted {
+    margin-right: 300px; /* Adjust margin to match scanner width */
+}
 /* Edit User Sliding Form */
 .edit-user-container {
     position: absolute;

@@ -235,9 +235,3 @@
     display: flex; /* Show the wrapper when active */
 }
 
-.borrowed-books-container{
-    color: black;
-    border-radius: 50px;
-
-    opacity: .9;
-}
