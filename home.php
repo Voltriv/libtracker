@@ -318,10 +318,10 @@ var attendanceChart = new Chart(ctx, {
                 position: 'right', // Moves legend to the right
                 labels: {
                     font: {
-                        size: 14,
+                        size: 20,
                         weight: 'bold'
                     },
-                    color: "#333" // Darker text for better readability
+                    color: "white" // Darker text for better readability
                 }
             },
             tooltip: {

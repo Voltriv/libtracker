@@ -49,6 +49,11 @@
             <h1 class="barcode_scanner">Barcode Scanner</h1>
         </div>
         <button id="stopScanner" class="add-btn">Stop Scanner</button>
+        <div class="manual-input">
+            <input type="text" id="manualStudentId" placeholder="Enter Student ID">
+            <button id="submitManualId" class="add-btn">Submit</button>
+        </div>
+
     </div>
 
     <div class="table-container3">
@@ -178,12 +183,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 constraints: {
                     width: 460,
                     height: 400,
-                    facingMode: "environment"
+                    facingMode: "environment",
                 },
             },
             decoder: {
-                readers: ["code_128_reader"]
+                readers: ["code_128_reader"],
+                halfSample: true, // Reduces the image size by half for faster processing
+                multiple: false, // Ensures it only looks for one code at a time
             },
+            locate: true, // Enable Locate for faster detection
+            frequency: 10 // Increase frequency (Default is 60, lower value is faster)
         }, function(err) {
             if (err) {
                 console.log(err);
@@ -205,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const code = data.codeResult.code;
         const currentTime = new Date().getTime();
 
-        if (code !== lastScannedCode || (currentTime - lastScannedTime) > 5000) {
+        if (code !== lastScannedCode || (currentTime - lastScannedTime) > 3000) {
             lastScannedCode = code;
             lastScannedTime = currentTime;
             console.log("Barcode detected and processed : [" + code + "]", data);
@@ -283,6 +292,18 @@ document.addEventListener('DOMContentLoaded', function() {
         container.classList.add('shifted');
         startScanner();
     }
+
+    document.getElementById('submitManualId').addEventListener('click', function() {
+    const manualStudentId = document.getElementById('manualStudentId').value.trim();
+    
+    if (manualStudentId) {
+        markAttendance(manualStudentId);
+        document.getElementById('manualStudentId').value = ''; // Clear input after submission
+    } else {
+        alert('Please enter a valid Student ID.');
+    }
+});
+
 });
 </script>
 

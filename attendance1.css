@@ -40,6 +40,7 @@
 
 #stopScanner {
     width: 100%; /* Adjust width as needed */
+    margin-bottom: 50px;
 }
 
 .drawingBuffer {
@@ -49,4 +50,32 @@
 
 .barcode_scanner {
     text-align: center;
+}
+
+.manual-input{
+    display: flex;
+    width: 133%;
+    padding: 0px;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.manual-input input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    right: 10px;
+    margin-left: 10px;
+    position: relative;
+}
+.manual-input button{
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    width: 50%;
+    margin-bottom: calc(var(--spacing-base)* 0.625);
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    
 }
