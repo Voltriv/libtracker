@@ -53,7 +53,17 @@ include 'db_config.php';
                     <th data-column4="last_name">Last Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="program">Program<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="department">Department<i class='bx bx-sort sort-icon'></i></th>
-                    <th data-column4="year_level">Year Level<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column4="year_level" data-order="asc">Year Level<i class='bx bx-sort sort-icon'></i>
+                        <i class='bx bx-filter filter-icon' id="yearLevelfilterBtn_User"></i>
+                        <div class="custom-dropdown_user hidden" id="yearLeveldropdown_user">
+                            <div class="dropdown_user-item" data-value-user="">All Year Levels</div>
+                            <div class="dropdown_user-item" data-value-user="Freshman (1st Year)">Freshman (1st Year)</div>
+                            <div class="dropdown_user-item" data-value-user="Sophomore (2nd Year)">Sophomore (2nd Year)</div>
+                            <div class="dropdown_user-item" data-value-user="Junior (3rd Year)">Junior (3rd Year)</div>
+                            <div class="dropdown_user-item" data-value-user="Senior (4th Year)">Senior (4th Year)</div>
+                            <div class="dropdown_user-item" data-value-user="Super Senior (5th Year)">Super Senior (5th Year)</div>
+                        </div>
+                    </th>
                     <th data-column4="phinmaed_email">Phinma Email<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column4="contact_number">Contact Number</th>
                     <th data-column4="status">Status<i class='bx bx-sort sort-icon'></i></th>
@@ -285,6 +295,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const userTableBody = document.getElementById('userTableBody');
         const userTableHeaders = document.querySelectorAll('th[data-column4]');
+        const filterBtn_User = document.getElementById('yearLevelfilterBtn_User');
+        const dropdown_user = document.getElementById('yearLeveldropdown_user');
+        const dropdown_userItems = document.querySelectorAll('.dropdown_user-item');
+
+        // Toggle dropdown_user visibility on filter icon click
+    filterBtn_User.addEventListener('click', function() {
+        dropdown_user.classList.toggle('hidden');
+    });
+
+    // Close dropdown_user when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!filterBtn_User.contains(event.target) && !dropdown_user.contains(event.target)) {
+            dropdown_user.classList.add('hidden');
+        }
+    });
+
+    // Handle dropdown_user item selection
+    dropdown_userItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Highlight the selected item
+            dropdown_userItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // Get the selected value
+            const selectedYear = this.getAttribute('data-value-user').toLowerCase();
+            filterByYearLevel(selectedYear);
+
+            // Hide dropdown_user after selection
+            dropdown_user.classList.add('hidden');
+        });
+    });
+
+    // Filter function
+    function filterByYearLevel(selectedYear) {
+        const rows = userTableBody.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+            const year_level = row.cells[5].textContent.toLowerCase();
+            row.style.display = selectedYear === "" || year_level === selectedYear ? '' : 'none';
+        });
+    }
+
+    
 
         userTableHeaders.forEach(header => {
         header.addEventListener('click', function() {

@@ -497,8 +497,9 @@ th:active .filter-icon {
 
 /* Hide by default */
 .hidden {
-    display: none;
+    display: none !important;
 }
+
 
 /* Individual dropdown item */
 .dropdown-item {
@@ -528,4 +529,38 @@ th i {
     user-select: none;
     cursor: pointer;
     outline: none;
+}
+
+
+
+
+.custom-dropdown_user {
+    position: absolute;
+    background-color:var(--body-color);
+    border: 1px solid #000000;
+    border-radius: 4px;
+    padding: 8px 0;
+    margin-top: 5px;
+    min-width: 180px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.dropdown_user-item {
+    padding: 10px;
+    color: var(--table-text-color);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+/* Hover effect */
+.dropdown_user-item:hover {
+    background-color:var(--success-color);
+}
+
+/* Active selection style */
+.dropdown_user-item.active {
+    background-color: #1e90ff;
 }

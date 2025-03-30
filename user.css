@@ -191,6 +191,9 @@
     color: red;
     float: right;
     font-size: 30px;
+    position: relative;
+    bottom: 20px;
+    left: 10px;
 }
 .close-floating-table:hover {
     color: darkred;
