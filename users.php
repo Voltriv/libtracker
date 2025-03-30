@@ -160,7 +160,7 @@ include 'db_config.php';
                 <option value="SHS">SHS</option>
             </select>
             <select name="year_level" id="editYearLevel" required>
-                <option value="Freshmen (1st Year)">Freshmen (1st Year)</option>
+                <option value="Freshman (1st Year)">Freshman (1st Year)</option>
                 <option value="Sophomore (2nd Year)">Sophomore (2nd Year)</option>
                 <option value="Junior (3rd Year)">Junior (3rd Year)</option>
                 <option value="Senior (4th Year)">Senior (4th Year)</option>

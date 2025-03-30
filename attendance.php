@@ -33,13 +33,13 @@
         <input type="text" id="search1" placeholder="Search...">
         <select id="departmentFilter" class="filter-attendance">
             <option value="">All Departments</option>
-            <option value=" CITE"> CITE</option>
-            <option value=" CMA"> CMA</option>
-            <option value=" CEA"> CEA</option>
-            <option value=" CAS"> CAS</option>
-            <option value=" CELA"> CELA</option>
-            <option value=" CCJE"> CCJE</option>
-            <option value=" CAHS"> CAHS</option>
+            <option value="CITE"> CITE</option>
+            <option value="CMA"> CMA</option>
+            <option value="CEA"> CEA</option>
+            <option value="CAS"> CAS</option>
+            <option value="CELA"> CELA</option>
+            <option value="CCJE"> CCJE</option>
+            <option value="CAHS"> CAHS</option>
         </select>
     </div>
     
@@ -64,7 +64,18 @@
                     <th data-column3="first_name" data-order="asc">First Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column3="last_name" data-order="asc">Last Name<i class='bx bx-sort sort-icon'></i></th>
                     <th data-column3="department" data-order="asc">Department<i class='bx bx-sort sort-icon'></i></th>
-                    <th data-column3="year_level" data-order="asc">Year Level<i class='bx bx-sort sort-icon'></i></th>
+                    <th data-column3="year_level" data-order="asc">Year Level<i class='bx bx-sort sort-icon'></i>
+                        <i class='bx bx-filter filter-icon' id="yearLevelFilterBtn"></i>
+                        <div class="custom-dropdown hidden" id="yearLevelDropdown">
+                            <div class="dropdown-item" data-value="">All Year Levels</div>
+                            <div class="dropdown-item" data-value="Freshman (1st Year)">Freshman (1st Year)</div>
+                            <div class="dropdown-item" data-value="Sophomore (2nd Year)">Sophomore (2nd Year)</div>
+                            <div class="dropdown-item" data-value="Junior (3rd Year)">Junior (3rd Year)</div>
+                            <div class="dropdown-item" data-value="Senior (4th Year)">Senior (4th Year)</div>
+                            <div class="dropdown-item" data-value="Super Senior (5th Year)">Super Senior (5th Year)</div>
+                        </div>
+                    </th>
+
                     <th data-column3="entry_time" data-order="asc">Entry Time<i class='bx bx-sort sort-icon'></i></th>
                 </tr>
             </thead>
@@ -114,18 +125,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search1');
     const departmentFilter = document.getElementById('departmentFilter');
     const attendance_tableHeaders = document.querySelectorAll('th[data-column3]');
+    const filterBtn = document.getElementById('yearLevelFilterBtn');
+    const dropdown = document.getElementById('yearLevelDropdown');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
 
     attendance_tableHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            const column = header.getAttribute('data-column3');
-            let order = header.getAttribute('data-order');
+    header.addEventListener('click', function(event) {
+        if (event.target.classList.contains('filter-icon')) return; // Skip if clicked on filter
+        const column = header.getAttribute('data-column3');
+        let order = header.getAttribute('data-order');
 
-            order = order === 'asc' ? 'desc' : 'asc';
-            header.setAttribute('data-order', order);
+        order = order === 'asc' ? 'desc' : 'asc';
+        header.setAttribute('data-order', order);
 
-            attendance_sortTable(column, order);
-        });
+        attendance_sortTable(column, order);
     });
+});
+
 
     function attendance_sortTable(column, order) {
         const rows = Array.from(attendanceTableBody.querySelectorAll('tr'));
@@ -303,6 +319,44 @@ document.addEventListener('DOMContentLoaded', function() {
         alert('Please enter a valid Student ID.');
     }
 });
+
+// Toggle dropdown visibility on filter icon click
+filterBtn.addEventListener('click', function() {
+        dropdown.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!filterBtn.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Handle dropdown item selection
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Highlight the selected item
+            dropdownItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+
+            // Get the selected value
+            const selectedYear = this.getAttribute('data-value').toLowerCase();
+            filterByYearLevel(selectedYear);
+
+            // Hide dropdown after selection
+            dropdown.classList.add('hidden');
+        });
+    });
+
+    // Filter function
+    function filterByYearLevel(selectedYear) {
+        const rows = attendanceTableBody.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+            const year_level = row.cells[4].textContent.toLowerCase();
+            row.style.display = selectedYear === "" || year_level === selectedYear ? '' : 'none';
+        });
+    }
 
 });
 </script>
