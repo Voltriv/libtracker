@@ -13,10 +13,6 @@ if (localStorage.getItem('darkMode') === 'enabled') {
     modeText.innerText = 'Light Mode';
 }
 
-// Check and apply sidebar state from localStorage
-if (localStorage.getItem('sidebarState') === 'closed') {
-    sidebar.classList.add('close');
-}
 
 // Function to highlight active link based on scroll
 function activateLink() {
